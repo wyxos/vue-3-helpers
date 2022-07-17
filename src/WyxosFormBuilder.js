@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { reactive, ref } from 'vue'
-import useFormErrors from '../stores/formErrors'
+import useFormErrors from './formErrors'
 
 export default class WyxosFormBuilder {
   loadPath = ''

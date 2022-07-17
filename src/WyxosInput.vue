@@ -1,5 +1,5 @@
 <script>
-import useFormErrors from '@laravel/stores/formErrors'
+import useFormErrors from './formErrors'
 
 export default {
   name: 'WyxosInput',

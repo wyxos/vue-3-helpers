@@ -1,5 +1,5 @@
 <script>
-import AutoCompleteSearch from '@dashboard/components/AutoCompleteSearch'
+import AutoCompleteSearch from './AutoCompleteSearch'
 
 export default {
   name: 'WyxosTags',
