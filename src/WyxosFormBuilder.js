@@ -48,6 +48,10 @@ export default class WyxosFormBuilder {
     return this.errors.get(key, this.bag)
   }
 
+  clearError(key){
+    this.errors.clear(key, this.bag)
+  }
+
   async submit(path, formatter, config = {}) {
     this.errors.clear(null, this.bag)
 

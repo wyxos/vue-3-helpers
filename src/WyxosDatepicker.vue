@@ -1,5 +1,5 @@
 <script>
-import moment from "moment";
+import moment from 'moment'
 
 export default {
     name: 'WyxosDatepicker',
@@ -18,25 +18,25 @@ export default {
         }
     },
     emits: ['update:modelValue'],
-    data() {
+    data () {
         return {
             query: null
         }
     },
-    mounted() {
+    mounted () {
         if (this.modelValue) {
             this.query = moment(this.modelValue, this.submitFormat)._d
         }
     },
     methods: {
-        dateFormatter(value) {
-            if(!value){
+        dateFormatter (value) {
+            if (!value) {
                 return null
             }
 
             return moment(value).format(this.displayFormat)
         },
-        updateQuery() {
+        updateQuery () {
             this.$emit('update:modelValue', this.query ? moment(this.query).format(this.submitFormat) : null)
         }
     }
@@ -45,7 +45,7 @@ export default {
 
 <template>
     <o-datepicker
-                v-model="query"
-                  :date-formatter="dateFormatter"
-                  @update:model-value="updateQuery"></o-datepicker>
+        v-model="query"
+        :date-formatter="dateFormatter"
+        @update:model-value="updateQuery"></o-datepicker>
 </template>
