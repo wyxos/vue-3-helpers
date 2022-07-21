@@ -72,18 +72,15 @@ export default {
 }
 </script>
 <template>
-  <div>
     <o-inputitems
-      v-model="query"
-      :data="search.result.value"
-      autocomplete
-      :open-on-focus="true"
-      field="name.en"
-      icon="tag"
-      @add="addedTag($event)"
-      @remove="removedTag($event)"
-      @focus="searchTags()"
-      @typing="searchTags($event)">
+        v-bind="$attrs"
+        v-model="query"
+        :data="search.result.value"
+        :open-on-focus="true"
+        autocomplete
+        @add="addedTag($event)"
+        @remove="removedTag($event)"
+        @focus="searchTags()"
+        @typing="searchTags($event)">
     </o-inputitems>
-  </div>
 </template>
