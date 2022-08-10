@@ -6,6 +6,9 @@ const formErrors = ref({
 
 export default function useFormErrors() {
   return {
+    createBag(bag){
+      formErrors.value[bag] = []
+    },
     set(error, bag = 'default') {
       const hasValidationErrors =
         error.response && error.response.data && error.response.data.errors
@@ -25,7 +28,6 @@ export default function useFormErrors() {
 
       throw error
     },
-
     get(key, bag = 'default') {
       const target = formErrors.value[bag]
 

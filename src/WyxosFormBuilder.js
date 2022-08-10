@@ -36,6 +36,8 @@ export default class WyxosFormBuilder {
     this.bag = bag
 
     this.errors = useFormErrors()
+
+    this.errors.createBag(this.bag)
   }
 
   setAttributes(attributes) {
