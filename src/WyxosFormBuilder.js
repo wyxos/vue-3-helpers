@@ -13,6 +13,7 @@ export default class WyxosFormBuilder {
   isLoaded = ref(true)
   isSubmitting = ref(false)
   isSubmitted = ref(false)
+  errors = null
 
   static create(options) {
     const instance = new WyxosFormBuilder()

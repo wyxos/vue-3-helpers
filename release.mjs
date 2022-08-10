@@ -28,6 +28,8 @@ const { version } = await inquirer.prompt([
 
 json.version = version
 
+fs.writeFileSync('./package.json', JSON.stringify(json, null, 2))
+
 const tagVersion = `v${version}`
 
 const message = `"feat: release ${tagVersion}"`
