@@ -2,7 +2,7 @@ import axios from 'axios'
 import { reactive, ref } from 'vue'
 import useFormErrors from './formErrors'
 
-export default class WyxosFormBuilder {
+export default class FormBuilder {
   loadPath = ''
   submitPath = ''
   bag = 'default'
@@ -16,7 +16,8 @@ export default class WyxosFormBuilder {
   errors = null
 
   static create(options) {
-    const instance = new WyxosFormBuilder()
+    console.log('test test')
+    const instance = new FormBuilder()
 
     instance.setPath(options.submitPath)
 
