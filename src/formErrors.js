@@ -7,7 +7,7 @@ const formErrors = reactive({
 export default function useFormErrors() {
   return {
     createBag(bag){
-      formErrors.value[bag] = []
+      formErrors[bag] = []
     },
     set(error, bag = 'default') {
       const hasValidationErrors =
@@ -17,7 +17,7 @@ export default function useFormErrors() {
         throw error
       }
 
-      formErrors.value[bag] = Object.keys(error.response.data.errors).map(
+      formErrors[bag] = Object.keys(error.response.data.errors).map(
         (key) => {
           return {
             key,
@@ -29,7 +29,7 @@ export default function useFormErrors() {
       throw error
     },
     get(key, bag = 'default') {
-      const target = formErrors.value[bag]
+      const target = formErrors[bag]
 
       if (!target) {
         return
@@ -48,7 +48,7 @@ export default function useFormErrors() {
     },
     clear(key, bag = 'default') {
       if (key) {
-        const target = formErrors.value[bag]
+        const target = formErrors[bag]
 
         if (!target) {
           console.warn(`Bag ${bag} is not defined.`)
@@ -62,7 +62,7 @@ export default function useFormErrors() {
         return
       }
 
-      formErrors.value[bag] = []
+      formErrors[bag] = []
     }
   }
 }
