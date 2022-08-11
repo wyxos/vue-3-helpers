@@ -1,6 +1,6 @@
-import { ref } from 'vue'
+import { reactive } from 'vue'
 
-const formErrors = ref({
+const formErrors = reactive({
   default: []
 })
 
