@@ -16,7 +16,6 @@ export default class FormBuilder {
   errors = null
 
   static create(options) {
-    console.log('test test')
     const instance = new FormBuilder()
 
     instance.setPath(options.submitPath)
