@@ -17,6 +17,7 @@
   "scripts": {
     "dev": "vite --config demo/vite.config.js",
     "build": "vite --config demo/vite.config.js build",
+    "release": "node release.mjs",
     "preview": "vite preview",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
