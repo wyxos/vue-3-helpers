@@ -136,7 +136,7 @@ const m = (t, e) => {
   for (const [r, a] of e)
     s[r] = a;
   return s;
-}, E = {
+}, j = {
   name: "WyxosButton",
   props: {
     loading: {
@@ -144,7 +144,7 @@ const m = (t, e) => {
       type: Boolean
     }
   }
-}, j = /* @__PURE__ */ q("Button content"), N = {
+}, E = /* @__PURE__ */ q("Button content"), N = {
   key: 0,
   class: "fas fa-spinner fa-spin"
 };
@@ -153,14 +153,14 @@ function A(t, e, s, r, a, i) {
   return l(), g(u, { disabled: s.loading }, {
     default: $(() => [
       V(t.$slots, "default", {}, () => [
-        j
+        E
       ]),
       s.loading ? (l(), y("i", N)) : _("", !0)
     ]),
     _: 3
   }, 8, ["disabled"]);
 }
-const ae = /* @__PURE__ */ m(E, [["render", A]]), I = {
+const ae = /* @__PURE__ */ m(j, [["render", A]]), I = {
   name: "WyxosCollection",
   props: {
     modelValue: {
@@ -441,5 +441,5 @@ export {
   ue as WyxosImage,
   le as WyxosInput,
   de as WyxosTags,
-  P as formErrors
+  P as useFormErrors
 };
