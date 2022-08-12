@@ -113,7 +113,7 @@ class O {
     this.isSubmitting.value = !0, this.isSubmitted.value = !1;
     const { data: s } = await Promise.resolve(e(f, this.form)).catch(
       (r) => {
-        throw console.log("we get here"), this.isSubmitting.value = !1, this.errors.set(r, this.bag), r;
+        throw this.isSubmitting.value = !1, this.errors.set(r, this.bag), r;
       }
     );
     return this.isSubmitting.value = !1, this.isSubmitted.value = !0, s;
