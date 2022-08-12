@@ -36,6 +36,8 @@ const message = `"feat: release ${tagVersion}"`
 
 // execSyncOut('npm run lint')
 
+execSyncOut('npm run build')
+
 execSyncOut('git add .')
 
 execSyncOut(`git commit -m ${message}`)

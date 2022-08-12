@@ -70,7 +70,7 @@ function P() {
   };
 }
 class O {
-  constructor() {
+  constructor(e) {
     n(this, "loadPath", "");
     n(this, "submitPath", "");
     n(this, "bag", "default");
@@ -82,10 +82,10 @@ class O {
     n(this, "isSubmitting", h(!1));
     n(this, "isSubmitted", h(!1));
     n(this, "errors", null);
+    this.setPath(e.submitPath), this.loadPath = e.loadPath, this.setErrors(e.errorBag), this.setAttributes(e.form);
   }
   static create(e) {
-    const s = new O();
-    return s.setPath(e.submitPath), s.loadPath = e.loadPath, s.setErrors(e.errorBag), s.setAttributes(e.form), s;
+    return new O(e);
   }
   setPath(e) {
     this.submitPath = e;

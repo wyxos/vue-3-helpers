@@ -15,18 +15,18 @@ export default class FormBuilder {
   isSubmitted = ref(false)
   errors = null
 
+  constructor (options) {
+    this.setPath(options.submitPath)
+
+    this.loadPath = options.loadPath
+
+    this.setErrors(options.errorBag)
+
+    this.setAttributes(options.form)
+  }
+
   static create(options) {
-    const instance = new FormBuilder()
-
-    instance.setPath(options.submitPath)
-
-    instance.loadPath = options.loadPath
-
-    instance.setErrors(options.errorBag)
-
-    instance.setAttributes(options.form)
-
-    return instance
+    return new FormBuilder(options)
   }
 
   setPath(path) {
