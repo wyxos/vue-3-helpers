@@ -436,7 +436,7 @@ export {
   O as FormBuilder,
   ae as WyxosButton,
   ie as WyxosCollection,
-  oe as WyxosDatePicker,
+  oe as WyxosDatepicker,
   ne as WyxosForm,
   ue as WyxosImage,
   le as WyxosInput,

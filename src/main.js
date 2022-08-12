@@ -3,7 +3,7 @@ import FormBuilder from './FormBuilder.js'
 import formErrors from './formErrors'
 import WyxosButton from './WyxosButton.vue'
 import WyxosCollection from './WyxosCollection.vue'
-import WyxosDatePicker from './WyxosDatePicker.vue'
+import WyxosDatepicker from './WyxosDatepicker.vue'
 import WyxosForm from './WyxosForm.vue'
 import WyxosImage from './WyxosImage.vue'
 import WyxosInput from './WyxosInput.vue'
@@ -15,7 +15,7 @@ export {
   formErrors,
   WyxosButton,
   WyxosCollection,
-  WyxosDatePicker,
+  WyxosDatepicker,
   WyxosForm,
   WyxosImage,
   WyxosInput,
