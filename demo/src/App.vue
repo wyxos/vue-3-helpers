@@ -1,8 +1,5 @@
 <script>
-    import WyxosForm from '@wyxos-helpers/WyxosForm.vue'
-    import FormBuilder from '@wyxos-helpers/FormBuilder'
-    import WyxosButton from '@wyxos-helpers/WyxosButton.vue'
-    import WyxosInput from '@wyxos-helpers/WyxosInput.vue'
+    import {WyxosForm, FormBuilder, WyxosButton, WyxosInput} from '../../src/main.js'
 
     export default {
         components: {

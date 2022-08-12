@@ -2,10 +2,21 @@
   "name": "@wyxos/vue-3-helpers",
   "version": "1.0.6",
   "description": "",
-  "main": "index.js",
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/vue-helpers.umd.cjs",
+  "module": "./dist/vue-helpers.js",
+  "exports": {
+    ".": {
+      "import": "./dist/vue-helpers.js",
+      "require": "./dist/vue-helpers.cjs"
+    }
+  },
   "scripts": {
     "dev": "vite --config demo/vite.config.js",
-    "build": "vite build --config demo/vite.config.js",
+    "build": "vite --config demo/vite.config.js build",
     "preview": "vite preview",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -15,6 +26,7 @@
   "dependencies": {
     "@oruga-ui/oruga-next": "^0.5.5",
     "axios": "^0.27.2",
+    "moment": "^2.29.4",
     "vue": "^3.2.37"
   },
   "devDependencies": {

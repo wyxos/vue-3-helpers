@@ -94,7 +94,6 @@ export default class FormBuilder {
 
     const { data } = await Promise.resolve(callback(axios, this.form)).catch(
       (error) => {
-        console.log('we get here')
         this.isSubmitting.value = false
 
         this.errors.set(error, this.bag)
