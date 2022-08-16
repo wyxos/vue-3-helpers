@@ -5,14 +5,9 @@ import path from 'path'
 // https://vitejs.dev/config/
 export default defineConfig({
   root: __dirname,
-  // resolve: {
-  //   alias: {
-  //     '@wyxos-helpers': path.resolve(
-  //       __dirname,
-  //       '../src'
-  //     )
-  //   }
-  // },
+  server: {
+    port: 3000
+  },
   plugins: [vue()],
   build: {
     outDir: '../dist',
@@ -25,7 +20,7 @@ export default defineConfig({
     rollupOptions: {
       // make sure to externalize deps that shouldn't be bundled
       // into your library
-      external: ['vue', '@oruga-ui/oruga-next', 'axios', 'moment'],
+      external: ['axios', 'moment'],
       output: {
         // Provide global variables to use in the UMD build
         // for externalized deps
