@@ -11,7 +11,8 @@ export default {
 </script>
 <template>
     <o-button :disabled="loading">
-        <slot>Button content</slot>
+        <slot v-if="!loading" name="default">Submit</slot>
+        <slot v-if="loading" name="loading">Processing...</slot>
         <i v-if="loading" class="fas fa-spinner fa-spin"></i>
     </o-button>
 </template>
