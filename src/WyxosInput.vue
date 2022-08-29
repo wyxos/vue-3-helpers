@@ -23,6 +23,21 @@ export default {
     return {
       errors
     }
+  },
+  computed: {
+      inputAttrs(){
+          const attrs = this.$attrs
+
+          const output = {}
+
+          Object.keys(attrs).forEach(key => {
+              if(!['class'].includes(key)){
+                  output[key] = attrs[key]
+              }
+          })
+
+          return attrs
+      }
   }
 }
 </script>
