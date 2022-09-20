@@ -1,16 +1,16 @@
 var k = Object.defineProperty;
 var W = (e, t, s) => t in e ? k(e, t, { enumerable: !0, configurable: !0, writable: !0, value: s }) : e[t] = s;
 var n = (e, t, s) => (W(e, typeof t != "symbol" ? t + "" : t, s), s);
-import { ref as h, reactive as y, resolveComponent as d, openBlock as l, createBlock as p, withCtx as V, renderSlot as b, createCommentVNode as f, createElementBlock as _, createTextVNode as S, normalizeProps as L, guardReactiveProps as T, createElementVNode as q, withModifiers as j, createVNode as F, mergeProps as $ } from "vue";
+import { ref as h, reactive as y, resolveComponent as d, openBlock as l, createBlock as p, withCtx as S, renderSlot as b, createCommentVNode as f, createElementBlock as _, createTextVNode as w, normalizeProps as L, guardReactiveProps as T, createElementVNode as P, withModifiers as j, createVNode as O, mergeProps as V } from "vue";
 import g from "axios";
-import v from "moment";
-class w {
+import $ from "moment";
+class v {
   constructor() {
     n(this, "loading", h(!1));
     n(this, "result", h([]));
   }
   static create() {
-    return new w();
+    return new v();
   }
   async search(t, s) {
     this.loading.value = !0, this.result.value = [];
@@ -30,7 +30,7 @@ class w {
 const c = y({
   default: []
 });
-function P() {
+function x() {
   return {
     createBag(e) {
       c[e] = [];
@@ -69,7 +69,7 @@ function P() {
     }
   };
 }
-class O {
+class q {
   constructor(t) {
     n(this, "loadPath", "");
     n(this, "submitPath", "");
@@ -85,13 +85,13 @@ class O {
     this.setPath(t.submitPath), this.loadPath = t.loadPath, this.setErrors(t.errorBag), this.setAttributes(t.form);
   }
   static create(t) {
-    return new O(t);
+    return new q(t);
   }
   setPath(t) {
     this.submitPath = t;
   }
   setErrors(t) {
-    this.bag = t, this.errors = P(), this.errors.createBag(this.bag);
+    this.bag = t, this.errors = x(), this.errors.createBag(this.bag);
   }
   setAttributes(t) {
     Object.assign(this.form, t), Object.assign(this.original, t);
@@ -144,14 +144,14 @@ const m = (e, t) => {
       type: Boolean
     }
   }
-}, B = /* @__PURE__ */ S("Submit"), N = /* @__PURE__ */ S("Processing..."), A = {
+}, B = /* @__PURE__ */ w("Submit"), N = /* @__PURE__ */ w("Processing..."), A = {
   key: 2,
   class: "fas fa-spinner fa-spin"
 };
 function I(e, t, s, r, a, i) {
   const u = d("o-button");
   return l(), p(u, { disabled: s.loading }, {
-    default: V(() => [
+    default: S(() => [
       s.loading ? f("", !0) : b(e.$slots, "default", { key: 0 }, () => [
         B
       ]),
@@ -163,7 +163,7 @@ function I(e, t, s, r, a, i) {
     _: 3
   }, 8, ["disabled"]);
 }
-const it = /* @__PURE__ */ m(E, [["render", I]]), Y = {
+const Y = /* @__PURE__ */ m(E, [["render", I]]), D = {
   name: "WyxosCollection",
   props: {
     modelValue: {
@@ -188,15 +188,15 @@ const it = /* @__PURE__ */ m(E, [["render", I]]), Y = {
       this.items.splice(e, 1), this.$emit("update:modelValue", this.items);
     }
   }
-}, D = /* @__PURE__ */ q("ul", null, [
-  /* @__PURE__ */ q("li")
+}, C = /* @__PURE__ */ P("ul", null, [
+  /* @__PURE__ */ P("li")
 ], -1);
-function C(e, t, s, r, a, i) {
+function J(e, t, s, r, a, i) {
   return b(e.$slots, "default", L(T({ add: i.add, remove: i.remove, items: a.items })), () => [
-    D
+    C
   ]);
 }
-const ot = /* @__PURE__ */ m(Y, [["render", C]]), J = {
+const z = /* @__PURE__ */ m(D, [["render", J]]), M = {
   name: "WyxosDatepicker",
   props: {
     modelValue: {
@@ -219,18 +219,18 @@ const ot = /* @__PURE__ */ m(Y, [["render", C]]), J = {
     };
   },
   mounted() {
-    this.modelValue && (this.query = v(this.modelValue, this.submitFormat)._d);
+    this.modelValue && (this.query = $(this.modelValue, this.submitFormat)._d);
   },
   methods: {
     dateFormatter(e) {
-      return e ? v(e).format(this.displayFormat) : null;
+      return e ? $(e).format(this.displayFormat) : null;
     },
     updateQuery() {
-      this.$emit("update:modelValue", this.query ? v(this.query).format(this.submitFormat) : null);
+      this.$emit("update:modelValue", this.query ? $(this.query).format(this.submitFormat) : null);
     }
   }
 };
-function z(e, t, s, r, a, i) {
+function R(e, t, s, r, a, i) {
   const u = d("o-datepicker");
   return l(), p(u, {
     modelValue: a.query,
@@ -241,7 +241,7 @@ function z(e, t, s, r, a, i) {
     "date-formatter": i.dateFormatter
   }, null, 8, ["modelValue", "date-formatter", "onUpdate:modelValue"]);
 }
-const nt = /* @__PURE__ */ m(J, [["render", z]]), M = {
+const U = /* @__PURE__ */ m(M, [["render", R]]), Q = {
   name: "WyxosForm",
   props: {
     form: {
@@ -250,31 +250,31 @@ const nt = /* @__PURE__ */ m(J, [["render", z]]), M = {
     }
   },
   emits: ["submit"]
-}, R = /* @__PURE__ */ S(" An error occurred. Try again? ");
-function U(e, t, s, r, a, i) {
+}, G = /* @__PURE__ */ w(" An error occurred. Try again? ");
+function H(e, t, s, r, a, i) {
   const u = d("o-loading"), o = d("o-button");
   return l(), _("div", null, [
     s.form.isLoaded.value ? (l(), _("form", {
       key: 0,
-      onSubmit: t[0] || (t[0] = j((x) => e.$emit("submit"), ["prevent"]))
+      onSubmit: t[0] || (t[0] = j((F) => e.$emit("submit"), ["prevent"]))
     }, [
       b(e.$slots, "default")
     ], 32)) : f("", !0),
-    F(u, {
+    O(u, {
       active: s.form.isLoading.value
     }, null, 8, ["active"]),
     !s.form.isLoaded.value && !s.form.isLoading.value ? (l(), p(o, {
       key: 1,
-      onClick: t[1] || (t[1] = (x) => s.form.load())
+      onClick: t[1] || (t[1] = (F) => s.form.load())
     }, {
-      default: V(() => [
-        R
+      default: S(() => [
+        G
       ]),
       _: 1
     })) : f("", !0)
   ]);
 }
-const ut = /* @__PURE__ */ m(M, [["render", U]]), Q = {
+const K = /* @__PURE__ */ m(Q, [["render", H]]), X = {
   name: "WyxosImage",
   props: {
     src: {
@@ -312,17 +312,17 @@ const ut = /* @__PURE__ */ m(M, [["render", U]]), Q = {
       }, e.src = this.src;
     }
   }
-}, G = ["width", "height"];
-function H(e, t, s, r, a, i) {
+}, Z = ["width", "height"];
+function tt(e, t, s, r, a, i) {
   return l(), _("img", {
     ref: "image",
     src: "",
     alt: "",
     width: a.width,
     height: a.height
-  }, null, 8, G);
+  }, null, 8, Z);
 }
-const lt = /* @__PURE__ */ m(Q, [["render", H]]), K = {
+const et = /* @__PURE__ */ m(X, [["render", tt]]), st = {
   name: "WyxosInput",
   props: {
     label: {
@@ -340,7 +340,7 @@ const lt = /* @__PURE__ */ m(Q, [["render", H]]), K = {
   },
   setup() {
     return {
-      errors: P()
+      errors: x()
     };
   },
   computed: {
@@ -352,18 +352,18 @@ const lt = /* @__PURE__ */ m(Q, [["render", H]]), K = {
     }
   }
 };
-function X(e, t, s, r, a, i) {
+function rt(e, t, s, r, a, i) {
   const u = d("o-input"), o = d("o-field");
-  return l(), p(o, $({ label: s.label }, r.errors.get(s.name, s.bag)), {
-    default: V(() => [
-      F(u, $(e.$attrs, {
-        onFocus: t[0] || (t[0] = (x) => r.errors.clear(s.name, s.bag))
+  return l(), p(o, V({ label: s.label }, r.errors.get(s.name, s.bag)), {
+    default: S(() => [
+      O(u, V(e.$attrs, {
+        onFocus: t[0] || (t[0] = (F) => r.errors.clear(s.name, s.bag))
       }), null, 16)
     ]),
     _: 1
   }, 16, ["label"]);
 }
-const dt = /* @__PURE__ */ m(K, [["render", X]]), Z = {
+const at = /* @__PURE__ */ m(st, [["render", rt]]), it = {
   name: "WyxosTags",
   props: {
     path: {
@@ -386,7 +386,7 @@ const dt = /* @__PURE__ */ m(K, [["render", X]]), Z = {
   emits: ["update:modelValue"],
   setup() {
     return {
-      search: w.create()
+      search: v.create()
     };
   },
   data() {
@@ -427,9 +427,9 @@ const dt = /* @__PURE__ */ m(K, [["render", X]]), Z = {
     }
   }
 };
-function tt(e, t, s, r, a, i) {
+function ot(e, t, s, r, a, i) {
   const u = d("o-inputitems");
-  return l(), p(u, $(e.$attrs, {
+  return l(), p(u, V(e.$attrs, {
     modelValue: a.query,
     "onUpdate:modelValue": t[0] || (t[0] = (o) => a.query = o),
     data: r.search.result.value,
@@ -441,16 +441,28 @@ function tt(e, t, s, r, a, i) {
     onTyping: t[4] || (t[4] = (o) => i.searchTags(o))
   }), null, 16, ["modelValue", "data"]);
 }
-const mt = /* @__PURE__ */ m(Z, [["render", tt]]);
+const nt = /* @__PURE__ */ m(it, [["render", ot]]), ht = {
+  AutoCompleteSearch: v,
+  FormBuilder: q,
+  useFormErrors: x,
+  WyxosButton: Y,
+  WyxosCollection: z,
+  WyxosDatepicker: U,
+  WyxosForm: K,
+  WyxosImage: et,
+  WyxosInput: at,
+  WyxosTags: nt
+};
 export {
-  w as AutoCompleteSearch,
-  O as FormBuilder,
-  it as WyxosButton,
-  ot as WyxosCollection,
-  nt as WyxosDatepicker,
-  ut as WyxosForm,
-  lt as WyxosImage,
-  dt as WyxosInput,
-  mt as WyxosTags,
-  P as useFormErrors
+  v as AutoCompleteSearch,
+  q as FormBuilder,
+  Y as WyxosButton,
+  z as WyxosCollection,
+  U as WyxosDatepicker,
+  K as WyxosForm,
+  et as WyxosImage,
+  at as WyxosInput,
+  nt as WyxosTags,
+  ht as default,
+  x as useFormErrors
 };
