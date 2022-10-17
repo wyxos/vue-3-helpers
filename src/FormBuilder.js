@@ -15,7 +15,7 @@ export default class FormBuilder {
   isSubmitted = ref(false)
   errors = null
 
-  constructor (options) {
+  constructor(options) {
     this.setPath(options.submitPath)
 
     this.loadPath = options.loadPath
@@ -51,7 +51,7 @@ export default class FormBuilder {
     return this.errors.get(key, this.bag)
   }
 
-  clearError(key){
+  clearError(key) {
     this.errors.clear(key, this.bag)
   }
 
@@ -115,7 +115,7 @@ export default class FormBuilder {
     this.isLoaded.value = false
 
     const { data } = await axios
-      .get(this.loadPath ? this.loadPath : path, {
+      .get(path || this.loadPath, {
         params
       })
       .catch((error) => {
@@ -125,6 +125,7 @@ export default class FormBuilder {
 
         throw error
       })
+
     this.setAttributes(data.form)
 
     if (data.model) {

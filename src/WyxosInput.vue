@@ -25,19 +25,19 @@ export default {
     }
   },
   computed: {
-      inputAttrs(){
-          const attrs = this.$attrs
+    inputAttrs() {
+      const attrs = this.$attrs
 
-          const output = {}
+      const output = {}
 
-          Object.keys(attrs).forEach(key => {
-              if(!['class'].includes(key)){
-                  output[key] = attrs[key]
-              }
-          })
+      Object.keys(attrs).forEach((key) => {
+        if (!['class'].includes(key)) {
+          output[key] = attrs[key]
+        }
+      })
 
-          return attrs
-      }
+      return attrs
+    }
   }
 }
 </script>

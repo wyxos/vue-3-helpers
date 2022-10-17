@@ -36,7 +36,13 @@ export default {
       const reader = new FileReader()
 
       reader.onload = (event) => {
-        this.$refs.image.src = event.target.result
+        const image = event.target.result
+
+        this.$refs.image.src = image
+
+        this.width = this.resize ? this.resize.width : image.width
+
+        this.height = this.resize ? this.resize.height : image.height
       }
 
       reader.readAsDataURL(this.src)
@@ -49,7 +55,7 @@ export default {
 
         this.width = this.resize ? this.resize.width : image.width
 
-        this.height = this.height ? this.resize.height : image.height
+        this.height = this.resize ? this.resize.height : image.height
       }
 
       image.src = this.src

@@ -1,6 +1,9 @@
 <template>
   <div>
-    <form v-if="form.isLoaded.value" @submit.prevent="$emit('submit')">
+    <form
+      v-if="form.isLoaded.value"
+      class="form"
+      @submit.prevent="$emit('submit')">
       <slot></slot>
     </form>
     <o-loading :active="form.isLoading.value"></o-loading>

@@ -21,16 +21,3 @@ export {
   WyxosInput,
   WyxosTags
 }
-
-export default {
-  AutoCompleteSearch,
-  FormBuilder,
-  useFormErrors,
-  WyxosButton,
-  WyxosCollection,
-  WyxosDatepicker,
-  WyxosForm,
-  WyxosImage,
-  WyxosInput,
-  WyxosTags
-}

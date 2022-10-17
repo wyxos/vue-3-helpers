@@ -6,7 +6,7 @@ const formErrors = reactive({
 
 export default function useFormErrors() {
   return {
-    createBag(bag){
+    createBag(bag) {
       formErrors[bag] = []
     },
     set(error, bag = 'default') {
@@ -17,14 +17,12 @@ export default function useFormErrors() {
         throw error
       }
 
-      formErrors[bag] = Object.keys(error.response.data.errors).map(
-        (key) => {
-          return {
-            key,
-            message: error.response.data.errors[key][0]
-          }
+      formErrors[bag] = Object.keys(error.response.data.errors).map((key) => {
+        return {
+          key,
+          message: error.response.data.errors[key][0]
         }
-      )
+      })
 
       throw error
     },
@@ -32,13 +30,19 @@ export default function useFormErrors() {
       const target = formErrors[bag]
 
       if (!target) {
-        return
+        return {
+          message: '',
+          variant: ''
+        }
       }
 
       const match = target.find((error) => error.key === key)
 
       if (!match) {
-        return
+        return {
+          message: '',
+          variant: ''
+        }
       }
 
       return {
