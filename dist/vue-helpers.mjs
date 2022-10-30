@@ -1,54 +1,54 @@
 var j = Object.defineProperty;
-var k = (t, e, s) => e in t ? j(t, e, { enumerable: !0, configurable: !0, writable: !0, value: s }) : t[e] = s;
-var n = (t, e, s) => (k(t, typeof e != "symbol" ? e + "" : e, s), s);
-import { ref as f, reactive as g, resolveComponent as m, openBlock as d, createBlock as b, withCtx as V, renderSlot as v, createCommentVNode as y, createElementBlock as _, createTextVNode as S, normalizeProps as W, guardReactiveProps as T, createElementVNode as F, withModifiers as A, createVNode as P, mergeProps as w } from "vue";
+var k = (s, e, t) => e in s ? j(s, e, { enumerable: !0, configurable: !0, writable: !0, value: t }) : s[e] = t;
+var u = (s, e, t) => (k(s, typeof e != "symbol" ? e + "" : e, t), t);
+import { ref as p, reactive as c, resolveComponent as g, openBlock as d, createBlock as v, withCtx as F, renderSlot as q, createCommentVNode as b, createElementBlock as _, createTextVNode as P, normalizeProps as A, guardReactiveProps as W, createElementVNode as S, withModifiers as T, createVNode as x, mergeProps as $ } from "vue";
 import h from "axios";
-import $ from "moment";
-class x {
+import w from "moment";
+class V {
   constructor() {
-    n(this, "loading", f(!1));
-    n(this, "result", f([]));
+    u(this, "loading", p(!1));
+    u(this, "result", p([]));
   }
   static create() {
-    return new x();
+    return new V();
   }
-  async search(e, s) {
+  async search(e, t) {
     this.loading.value = !0, this.result.value = [];
-    const { data: a } = await h.post(`${e}/search`, s).catch((r) => {
-      throw this.loading.value = !1, r;
+    const { data: a } = await h.post(`${e}/search`, t).catch((i) => {
+      throw this.loading.value = !1, i;
     });
     this.result.value = a.result, this.loading.value = !1;
   }
-  async restore(e, s) {
+  async restore(e, t) {
     this.loading.value = !0, this.result.value = [];
-    const { data: a } = await h.post(`${e}/restore`, s).catch((r) => {
-      throw this.loading.value = !1, r;
+    const { data: a } = await h.post(`${e}/restore`, t).catch((i) => {
+      throw this.loading.value = !1, i;
     });
     return this.loading.value = !1, a;
   }
 }
-const p = g({
+const y = c({
   default: []
 });
-function O() {
+function L() {
   return {
-    createBag(t) {
-      p[t] = [];
+    createBag(s) {
+      y[s] = [];
     },
-    set(t, e = "default") {
-      throw t.response && t.response.data && t.response.data.errors && (p[e] = Object.keys(t.response.data.errors).map((a) => ({
+    set(s, e = "default") {
+      throw s.response && s.response.data && s.response.data.errors && (y[e] = Object.keys(s.response.data.errors).map((a) => ({
         key: a,
-        message: t.response.data.errors[a][0]
-      }))), t;
+        message: s.response.data.errors[a][0]
+      }))), s;
     },
-    get(t, e = "default") {
-      const s = p[e];
-      if (!s)
+    get(s, e = "default") {
+      const t = y[e];
+      if (!t)
         return {
           message: "",
           variant: ""
         };
-      const a = s.find((r) => r.key === t);
+      const a = t.find((i) => i.key === s);
       return a ? {
         message: a.message,
         variant: "danger"
@@ -57,44 +57,44 @@ function O() {
         variant: ""
       };
     },
-    clear(t, e = "default") {
-      if (t) {
-        const s = p[e];
-        if (!s) {
+    clear(s, e = "default") {
+      if (s) {
+        const t = y[e];
+        if (!t) {
           console.warn(`Bag ${e} is not defined.`);
           return;
         }
-        const a = s.findIndex((r) => r.key === t);
-        s.splice(a, 1);
+        const a = t.findIndex((i) => i.key === s);
+        t.splice(a, 1);
         return;
       }
-      p[e] = [];
+      y[e] = [];
     }
   };
 }
-class L {
+class O {
   constructor(e) {
-    n(this, "loadPath", "");
-    n(this, "submitPath", "");
-    n(this, "bag", "default");
-    n(this, "model", g({}));
-    n(this, "form", g({}));
-    n(this, "original", g({}));
-    n(this, "isLoading", f(!1));
-    n(this, "isLoaded", f(!0));
-    n(this, "isSubmitting", f(!1));
-    n(this, "isSubmitted", f(!1));
-    n(this, "errors", null);
+    u(this, "loadPath", "");
+    u(this, "submitPath", "");
+    u(this, "bag", "default");
+    u(this, "model", c({}));
+    u(this, "form", c({}));
+    u(this, "original", c({}));
+    u(this, "isLoading", p(!1));
+    u(this, "isLoaded", p(!0));
+    u(this, "isSubmitting", p(!1));
+    u(this, "isSubmitted", p(!1));
+    u(this, "errors", null);
     this.setPath(e.submitPath), this.loadPath = e.loadPath, this.setErrors(e.errorBag), this.setAttributes(e.form);
   }
   static create(e) {
-    return new L(e);
+    return new O(e);
   }
   setPath(e) {
     this.submitPath = e;
   }
   setErrors(e) {
-    this.bag = e, this.errors = O(), this.errors.createBag(this.bag);
+    this.bag = e, this.errors = L(), this.errors.createBag(this.bag);
   }
   setAttributes(e) {
     Object.assign(this.form, e), Object.assign(this.original, e);
@@ -105,32 +105,32 @@ class L {
   clearError(e) {
     this.errors.clear(e, this.bag);
   }
-  async submit(e, s, a = {}) {
+  async submit(e, t, a = {}) {
     this.errors.clear(null, this.bag), this.isSubmitting.value = !0, this.isSubmitted.value = !1;
-    const r = s ? s(Object.assign({}, this.form)) : JSON.parse(JSON.stringify(this.form)), { data: o } = await h[a.method || "post"](
+    const i = t ? t(Object.assign({}, this.form)) : JSON.parse(JSON.stringify(this.form)), { data: n } = await h[a.method || "post"](
       e || this.submitPath,
-      r,
+      i,
       a
-    ).catch((u) => {
-      throw this.isSubmitting.value = !1, this.errors.set(u, this.bag), u;
+    ).catch((l) => {
+      throw this.isSubmitting.value = !1, this.errors.set(l, this.bag), l;
     });
-    return this.errors.clear(null, this.bag), Object.assign(this.original, JSON.parse(JSON.stringify(this.form))), this.isSubmitting.value = !1, this.isSubmitted.value = !0, o;
+    return this.errors.clear(null, this.bag), Object.assign(this.original, JSON.parse(JSON.stringify(this.form))), this.isSubmitting.value = !1, this.isSubmitted.value = !0, n;
   }
   async advancedSubmit(e) {
     this.isSubmitting.value = !0, this.isSubmitted.value = !1;
-    const { data: s } = await Promise.resolve(e(h, this.form)).catch(
+    const { data: t } = await Promise.resolve(e(h, this.form)).catch(
       (a) => {
         throw this.isSubmitting.value = !1, this.errors.set(a, this.bag), a;
       }
     );
-    return this.isSubmitting.value = !1, this.isSubmitted.value = !0, s;
+    return this.isSubmitting.value = !1, this.isSubmitted.value = !0, t;
   }
-  async load(e, s) {
+  async load(e, t) {
     this.isLoading.value = !0, this.isLoaded.value = !1;
     const { data: a } = await h.get(e || this.loadPath, {
-      params: s
-    }).catch((r) => {
-      throw this.isLoading.value = !1, this.isLoaded.value = !1, r;
+      params: t
+    }).catch((i) => {
+      throw this.isLoading.value = !1, this.isLoaded.value = !1, i;
     });
     return this.setAttributes(a.form), a.model && Object.assign(this.model, a.model), this.isLoading.value = !1, this.isLoaded.value = !0, a;
   }
@@ -140,8 +140,8 @@ class L {
 }
 class oe {
   constructor() {
-    n(this, "structure", {});
-    n(this, "query", g({
+    u(this, "structure", {});
+    u(this, "query", c({
       items: [],
       perPage: 0,
       total: 0,
@@ -149,86 +149,161 @@ class oe {
       isLoaded: !1,
       isFilterActive: !1
     }));
-    n(this, "params", g({
+    u(this, "params", c({
       page: 1
     }));
-    n(this, "router", null);
+    u(this, "router", null);
   }
-  static create(e, s = {}, a = {}, r) {
+  static create(e, t = {}, a = {}, i) {
     a = Object.assign(
       { base: "/api/admin", route: `${e}.index` },
       a
     );
-    const o = a.base;
-    console.log("index", a);
-    const u = {
+    const n = a.base, l = {
       route: a.route,
-      index: a.index || `${o}/${e}/index`,
-      destroy: `${o}/${e}/destroy`
-    }, i = new this();
-    return i.options = a, i.structure = s, i.params = Object.assign(i.params, s), i.router = r, i.urls = u, i;
+      index: a.index || `${n}/${e}/index`,
+      destroy: `${n}/${e}/destroy`
+    }, r = new this();
+    return r.options = a, r.structure = t, r.params = Object.assign(r.params, t), r.router = i, r.urls = l, r;
   }
   async fetch(e) {
     this.query.isLoading = !0, this.query.isLoaded = !1;
-    const { data: s } = await h.get(e || this.urls.index, {
+    const { data: t } = await h.get(e || this.urls.index, {
       params: this.params
     }).catch((a) => {
       throw this.query.isLoading = !1, a;
     });
-    return await this.router.push({ name: this.urls.route, query: this.params }), this.query.isLoading = !1, this.query.isLoaded = !0, s;
+    return await this.router.push({ name: this.urls.route, query: this.params }), this.query.isLoading = !1, this.query.isLoaded = !0, t;
   }
   async load(e) {
-    const s = await this.fetch(e);
-    return Object.assign(this.query, s.query, {
-      items: s.query.items.map((a) => ({
+    const t = await this.fetch(e);
+    return Object.assign(this.query, t.query, {
+      items: t.query.items.map((a) => ({
         ...a,
         isProcessing: !1
       }))
-    }), s;
+    }), t;
   }
   onPageChange(e) {
     return this.params.page = e, this.load();
   }
-  async action(e, { row: s, index: a, remove: r, method: o }, u = {}) {
-    s.isProcessing = !0;
-    const i = {
-      id: s.id,
-      ...u
+  async action(e, { row: t, index: a, remove: i, method: n }, l = {}) {
+    t.isProcessing = !0;
+    const r = {
+      id: t.id,
+      ...l
     };
-    if (o === "delete") {
-      const { data: l } = await h.delete(e, {
-        data: i
-      }).catch((q) => {
-        throw s.isProcessing = !1, q;
+    if (n === "delete") {
+      const { data: o } = await h.delete(e, {
+        data: r
+      }).catch((m) => {
+        throw t.isProcessing = !1, m;
       });
-      s.isProcessing = !1, l.row && Object.assign(s, l.row);
+      t.isProcessing = !1, o.row && Object.assign(t, o.row);
     } else {
-      const { data: l } = await h.post(e, i).catch((q) => {
-        throw s.isProcessing = !1, q;
+      const { data: o } = await h.post(e, r).catch((m) => {
+        throw t.isProcessing = !1, m;
       });
-      s.isProcessing = !1, l.row && Object.assign(s, l.row);
+      t.isProcessing = !1, o.row && Object.assign(t, o.row);
     }
-    if (r) {
-      const l = await this.fetch();
-      if (this.query.items.splice(a, 1), !l.query.items.length) {
+    if (i) {
+      const o = await this.fetch();
+      if (this.query.items.splice(a, 1), !o.query.items.length) {
         this.params.page--, await this.load();
         return;
       }
-      this.query.items.length < l.query.items.length && this.query.items.push(l.query.items[l.query.items.length - 1]);
+      this.query.items.length < o.query.items.length && this.query.items.push(o.query.items[o.query.items.length - 1]);
     }
   }
-  destroy(e, s) {
-    return this.action(this.urls.destroy, { ...e, remove: !0 }, s);
+  destroy(e, t) {
+    return this.action(this.urls.destroy, { ...e, remove: !0 }, t);
   }
   async resetFilter(e = null) {
     Object.assign(this.params, this.structure), this.query.isFilterActive = !1, await this.load(e);
   }
 }
-const c = (t, e) => {
-  const s = t.__vccOpts || t;
-  for (const [a, r] of e)
-    s[a] = r;
-  return s;
+class ne {
+  constructor() {
+    u(this, "api", null);
+    u(this, "structure", null);
+    u(this, "query", c({
+      items: [],
+      perPage: 0,
+      total: 0,
+      isLoading: !1,
+      isLoaded: !1,
+      isFilterActive: !1
+    }));
+    u(this, "params", c({
+      page: 1
+    }));
+  }
+  static create(e, t) {
+    const a = new this();
+    return a.structure = () => Object.assign({}, e), Object.assign(a.params, e), a.api = h.create(t.axios || {}), a;
+  }
+  async fetch(e) {
+    this.query.isLoading = !0, this.query.isLoaded = !1;
+    const { data: t } = await this.api.get(e).catch((a) => {
+      throw this.query.isLoading = !1, a;
+    });
+    return this.query.isLoading = !1, this.query.isLoaded = !0, t;
+  }
+  async load(e) {
+    const t = await this.fetch(e);
+    return Object.assign(this.query, t.query, {
+      items: t.query.items.map((a) => ({
+        ...a,
+        isProcessing: !1
+      }))
+    }), t;
+  }
+  onPageChange(e) {
+    return this.params.page = e, this.load();
+  }
+  async action(e, { item: { row: t, index: a }, remove: i, method: n }, l = {}) {
+    t.isProcessing = !0;
+    const r = {
+      id: t.id,
+      ...l
+    };
+    if (n === "delete") {
+      const { data: o } = await this.api.delete(e, {
+        data: r
+      }).catch((m) => {
+        throw t.isProcessing = !1, m;
+      });
+      t.isProcessing = !1, o.row && Object.assign(t, o.row);
+    } else {
+      const { data: o } = await this.api.post(e, r).catch((m) => {
+        throw t.isProcessing = !1, m;
+      });
+      t.isProcessing = !1, o.row && Object.assign(t, o.row);
+    }
+    if (i) {
+      const o = await this.fetch();
+      if (this.query.items.splice(a, 1), !o.query.items.length) {
+        this.params.page--, await this.load();
+        return;
+      }
+      this.query.items.length < o.query.items.length && this.query.items.push(o.query.items[o.query.items.length - 1]);
+    }
+  }
+  destroy(e, t, a) {
+    return this.action(e, { ...t, remove: !0 }, a);
+  }
+  openFilter() {
+    this.query.isFilterActive = !0;
+  }
+  async resetFilter(e = null) {
+    Object.assign(this.params, this.structure), this.query.isFilterActive = !1, await this.load(e);
+  }
+}
+const f = (s, e) => {
+  const t = s.__vccOpts || s;
+  for (const [a, i] of e)
+    t[a] = i;
+  return t;
 }, E = {
   name: "WyxosButton",
   props: {
@@ -237,26 +312,26 @@ const c = (t, e) => {
       type: Boolean
     }
   }
-}, z = /* @__PURE__ */ S("Submit"), B = /* @__PURE__ */ S("Processing..."), N = {
+}, z = /* @__PURE__ */ P("Submit"), B = /* @__PURE__ */ P("Processing..."), N = {
   key: 2,
   class: "fas fa-spinner fa-spin"
 };
-function I(t, e, s, a, r, o) {
-  const u = m("o-button");
-  return d(), b(u, { disabled: s.loading }, {
-    default: V(() => [
-      s.loading ? y("", !0) : v(t.$slots, "default", { key: 0 }, () => [
+function C(s, e, t, a, i, n) {
+  const l = g("o-button");
+  return d(), v(l, { disabled: t.loading }, {
+    default: F(() => [
+      t.loading ? b("", !0) : q(s.$slots, "default", { key: 0 }, () => [
         z
       ]),
-      s.loading ? v(t.$slots, "loading", { key: 1 }, () => [
+      t.loading ? q(s.$slots, "loading", { key: 1 }, () => [
         B
-      ]) : y("", !0),
-      s.loading ? (d(), _("i", N)) : y("", !0)
+      ]) : b("", !0),
+      t.loading ? (d(), _("i", N)) : b("", !0)
     ]),
     _: 3
   }, 8, ["disabled"]);
 }
-const ne = /* @__PURE__ */ c(E, [["render", I]]), Y = {
+const ue = /* @__PURE__ */ f(E, [["render", C]]), I = {
   name: "WyxosCollection",
   props: {
     modelValue: {
@@ -274,22 +349,22 @@ const ne = /* @__PURE__ */ c(E, [["render", I]]), Y = {
     this.items = this.modelValue;
   },
   methods: {
-    add(t) {
-      this.items.push(t), this.$emit("update:modelValue", this.items);
+    add(s) {
+      this.items.push(s), this.$emit("update:modelValue", this.items);
     },
-    remove(t) {
-      this.items.splice(t, 1), this.$emit("update:modelValue", this.items);
+    remove(s) {
+      this.items.splice(s, 1), this.$emit("update:modelValue", this.items);
     }
   }
-}, C = /* @__PURE__ */ F("ul", null, [
-  /* @__PURE__ */ F("li")
+}, Y = /* @__PURE__ */ S("ul", null, [
+  /* @__PURE__ */ S("li")
 ], -1);
-function D(t, e, s, a, r, o) {
-  return v(t.$slots, "default", W(T({ add: o.add, remove: o.remove, items: r.items })), () => [
-    C
+function D(s, e, t, a, i, n) {
+  return q(s.$slots, "default", A(W({ add: n.add, remove: n.remove, items: i.items })), () => [
+    Y
   ]);
 }
-const ue = /* @__PURE__ */ c(Y, [["render", D]]), J = {
+const le = /* @__PURE__ */ f(I, [["render", D]]), J = {
   name: "WyxosDatepicker",
   props: {
     modelValue: {
@@ -312,32 +387,32 @@ const ue = /* @__PURE__ */ c(Y, [["render", D]]), J = {
     };
   },
   mounted() {
-    this.modelValue && (this.query = $(this.modelValue, this.submitFormat)._d);
+    this.modelValue && (this.query = w(this.modelValue, this.submitFormat)._d);
   },
   methods: {
-    dateFormatter(t) {
-      return t ? $(t).format(this.displayFormat) : null;
+    dateFormatter(s) {
+      return s ? w(s).format(this.displayFormat) : null;
     },
     updateQuery() {
       this.$emit(
         "update:modelValue",
-        this.query ? $(this.query).format(this.submitFormat) : null
+        this.query ? w(this.query).format(this.submitFormat) : null
       );
     }
   }
 };
-function M(t, e, s, a, r, o) {
-  const u = m("o-datepicker");
-  return d(), b(u, {
-    modelValue: r.query,
+function M(s, e, t, a, i, n) {
+  const l = g("o-datepicker");
+  return d(), v(l, {
+    modelValue: i.query,
     "onUpdate:modelValue": [
-      e[0] || (e[0] = (i) => r.query = i),
-      o.updateQuery
+      e[0] || (e[0] = (r) => i.query = r),
+      n.updateQuery
     ],
-    "date-formatter": o.dateFormatter
+    "date-formatter": n.dateFormatter
   }, null, 8, ["modelValue", "date-formatter", "onUpdate:modelValue"]);
 }
-const le = /* @__PURE__ */ c(J, [["render", M]]), R = {
+const de = /* @__PURE__ */ f(J, [["render", M]]), R = {
   name: "WyxosForm",
   props: {
     form: {
@@ -346,32 +421,32 @@ const le = /* @__PURE__ */ c(J, [["render", M]]), R = {
     }
   },
   emits: ["submit"]
-}, U = /* @__PURE__ */ S(" An error occurred. Try again? ");
-function Q(t, e, s, a, r, o) {
-  const u = m("o-loading"), i = m("o-button");
+}, U = /* @__PURE__ */ P(" An error occurred. Try again? ");
+function Q(s, e, t, a, i, n) {
+  const l = g("o-loading"), r = g("o-button");
   return d(), _("div", null, [
-    s.form.isLoaded.value ? (d(), _("form", {
+    t.form.isLoaded.value ? (d(), _("form", {
       key: 0,
       class: "form",
-      onSubmit: e[0] || (e[0] = A((l) => t.$emit("submit"), ["prevent"]))
+      onSubmit: e[0] || (e[0] = T((o) => s.$emit("submit"), ["prevent"]))
     }, [
-      v(t.$slots, "default")
-    ], 32)) : y("", !0),
-    P(u, {
-      active: s.form.isLoading.value
+      q(s.$slots, "default")
+    ], 32)) : b("", !0),
+    x(l, {
+      active: t.form.isLoading.value
     }, null, 8, ["active"]),
-    !s.form.isLoaded.value && !s.form.isLoading.value ? (d(), b(i, {
+    !t.form.isLoaded.value && !t.form.isLoading.value ? (d(), v(r, {
       key: 1,
-      onClick: e[1] || (e[1] = (l) => s.form.load())
+      onClick: e[1] || (e[1] = (o) => t.form.load())
     }, {
-      default: V(() => [
+      default: F(() => [
         U
       ]),
       _: 1
-    })) : y("", !0)
+    })) : b("", !0)
   ]);
 }
-const de = /* @__PURE__ */ c(R, [["render", Q]]), G = {
+const he = /* @__PURE__ */ f(R, [["render", Q]]), G = {
   name: "WyxosImage",
   props: {
     src: {
@@ -397,30 +472,30 @@ const de = /* @__PURE__ */ c(R, [["render", Q]]), G = {
       return typeof this.src == "object" ? this.loadFile() : this.loadPath();
     },
     loadFile() {
-      const t = new FileReader();
-      t.onload = (e) => {
-        const s = e.target.result;
-        this.$refs.image.src = s, this.width = this.resize ? this.resize.width : s.width, this.height = this.resize ? this.resize.height : s.height;
-      }, t.readAsDataURL(this.src);
+      const s = new FileReader();
+      s.onload = (e) => {
+        const t = e.target.result;
+        this.$refs.image.src = t, this.width = this.resize ? this.resize.width : t.width, this.height = this.resize ? this.resize.height : t.height;
+      }, s.readAsDataURL(this.src);
     },
     loadPath() {
-      const t = new Image();
-      t.onload = () => {
-        this.$refs.image.src = this.src, this.width = this.resize ? this.resize.width : t.width, this.height = this.resize ? this.resize.height : t.height;
-      }, t.src = this.src;
+      const s = new Image();
+      s.onload = () => {
+        this.$refs.image.src = this.src, this.width = this.resize ? this.resize.width : s.width, this.height = this.resize ? this.resize.height : s.height;
+      }, s.src = this.src;
     }
   }
 }, H = ["width", "height"];
-function K(t, e, s, a, r, o) {
+function K(s, e, t, a, i, n) {
   return d(), _("img", {
     ref: "image",
     src: "",
     alt: "",
-    width: r.width,
-    height: r.height
+    width: i.width,
+    height: i.height
   }, null, 8, H);
 }
-const he = /* @__PURE__ */ c(G, [["render", K]]), X = {
+const ce = /* @__PURE__ */ f(G, [["render", K]]), X = {
   name: "WyxosInput",
   props: {
     label: {
@@ -438,30 +513,30 @@ const he = /* @__PURE__ */ c(G, [["render", K]]), X = {
   },
   setup() {
     return {
-      errors: O()
+      errors: L()
     };
   },
   computed: {
     inputAttrs() {
-      const t = this.$attrs;
-      return Object.keys(t).forEach((e) => {
-        ["class"].includes(e) || t[e];
-      }), t;
+      const s = this.$attrs;
+      return Object.keys(s).forEach((e) => {
+        ["class"].includes(e) || s[e];
+      }), s;
     }
   }
 };
-function Z(t, e, s, a, r, o) {
-  const u = m("o-input"), i = m("o-field");
-  return d(), b(i, w({ label: s.label }, a.errors.get(s.name, s.bag)), {
-    default: V(() => [
-      P(u, w(t.$attrs, {
-        onFocus: e[0] || (e[0] = (l) => a.errors.clear(s.name, s.bag))
+function Z(s, e, t, a, i, n) {
+  const l = g("o-input"), r = g("o-field");
+  return d(), v(r, $({ label: t.label }, a.errors.get(t.name, t.bag)), {
+    default: F(() => [
+      x(l, $(s.$attrs, {
+        onFocus: e[0] || (e[0] = (o) => a.errors.clear(t.name, t.bag))
       }), null, 16)
     ]),
     _: 1
   }, 16, ["label"]);
 }
-const me = /* @__PURE__ */ c(X, [["render", Z]]), ee = {
+const me = /* @__PURE__ */ f(X, [["render", Z]]), ee = {
   name: "WyxosTags",
   props: {
     path: {
@@ -482,17 +557,17 @@ const me = /* @__PURE__ */ c(X, [["render", Z]]), ee = {
     },
     restoreFormatter: {
       type: Function,
-      default: (t) => t
+      default: (s) => s
     },
     payloadFormatter: {
       type: Function,
-      default: (t) => t
+      default: (s) => s
     }
   },
   emits: ["update:modelValue"],
   setup() {
     return {
-      search: x.create()
+      search: V.create()
     };
   },
   data() {
@@ -502,66 +577,67 @@ const me = /* @__PURE__ */ c(X, [["render", Z]]), ee = {
   },
   async mounted() {
     if (this.modelValue && this.modelValue.length) {
-      const { result: t } = await this.search.restore(
+      const { result: s } = await this.search.restore(
         this.path,
         this.restoreFormatter({
           values: this.modelValue
         })
       );
-      this.query = t, this.$emit(
+      this.query = s, this.$emit(
         "update:modelValue",
         this.query.map((e) => this.formatter(e))
       );
     }
   },
   methods: {
-    searchTags(t) {
+    searchTags(s) {
       return this.search.search(
         this.path,
         this.payloadFormatter({
-          value: t,
+          value: s,
           exclude: this.query.map((e) => e.id)
         })
       );
     },
     addedTag() {
-      const t = this.query.map((e) => this.formatter(e));
-      console.log("r", t), this.$emit("update:modelValue", t);
+      const s = this.query.map((e) => this.formatter(e));
+      console.log("r", s), this.$emit("update:modelValue", s);
     },
     removedTag() {
-      const t = this.query.map((e) => this.formatter(e));
-      console.log("r", t), this.$emit("update:modelValue", t);
+      const s = this.query.map((e) => this.formatter(e));
+      console.log("r", s), this.$emit("update:modelValue", s);
     },
     reset() {
       this.query = [], this.$emit("update:modelValue", this.query);
     }
   }
 };
-function te(t, e, s, a, r, o) {
-  const u = m("o-inputitems");
-  return d(), b(u, w(t.$attrs, {
-    modelValue: r.query,
-    "onUpdate:modelValue": e[0] || (e[0] = (i) => r.query = i),
+function te(s, e, t, a, i, n) {
+  const l = g("o-inputitems");
+  return d(), v(l, $(s.$attrs, {
+    modelValue: i.query,
+    "onUpdate:modelValue": e[0] || (e[0] = (r) => i.query = r),
     data: a.search.result.value,
     "open-on-focus": !0,
     autocomplete: "",
-    onAdd: e[1] || (e[1] = (i) => o.addedTag(i)),
-    onRemove: e[2] || (e[2] = (i) => o.removedTag(i)),
-    onFocus: e[3] || (e[3] = (i) => o.searchTags()),
-    onTyping: e[4] || (e[4] = (i) => o.searchTags(i))
+    onAdd: e[1] || (e[1] = (r) => n.addedTag(r)),
+    onRemove: e[2] || (e[2] = (r) => n.removedTag(r)),
+    onFocus: e[3] || (e[3] = (r) => n.searchTags()),
+    onTyping: e[4] || (e[4] = (r) => n.searchTags(r))
   }), null, 16, ["modelValue", "data"]);
 }
-const ce = /* @__PURE__ */ c(ee, [["render", te]]);
+const ge = /* @__PURE__ */ f(ee, [["render", te]]);
 export {
-  x as AutoCompleteSearch,
-  L as FormBuilder,
+  V as AutoCompleteSearch,
+  O as FormBuilder,
+  ne as Listing,
   oe as ResourceList,
-  ne as WyxosButton,
-  ue as WyxosCollection,
-  le as WyxosDatepicker,
-  de as WyxosForm,
-  he as WyxosImage,
+  ue as WyxosButton,
+  le as WyxosCollection,
+  de as WyxosDatepicker,
+  he as WyxosForm,
+  ce as WyxosImage,
   me as WyxosInput,
-  ce as WyxosTags,
-  O as useFormErrors
+  ge as WyxosTags,
+  L as useFormErrors
 };
