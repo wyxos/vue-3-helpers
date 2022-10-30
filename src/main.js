@@ -1,6 +1,7 @@
 import AutoCompleteSearch from './AutoCompleteSearch'
 import FormBuilder from './FormBuilder'
 import ResourceList from './ResourceList'
+import Listing from './Listing'
 import useFormErrors from './formErrors'
 import WyxosButton from './WyxosButton.vue'
 import WyxosCollection from './WyxosCollection.vue'
@@ -14,6 +15,7 @@ export {
   AutoCompleteSearch,
   FormBuilder,
   ResourceList,
+  Listing,
   useFormErrors,
   WyxosButton,
   WyxosCollection,

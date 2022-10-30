@@ -1,8 +1,10 @@
-import { reactive } from 'vue'
+import {reactive} from 'vue'
 import axios from 'axios'
 
-export default class ResourceList {
-  structure = {}
+export default class Listing {
+  api = null
+
+  structure = null
 
   query = reactive({
     items: [],
@@ -17,53 +19,29 @@ export default class ResourceList {
     page: 1
   })
 
-  router = null
-
-  static create(resource, structure = {}, options = {}, router) {
-    options = Object.assign(
-      { base: '/api/admin', route: `${resource}.index` },
-      options
-    )
-
-    const base = options.base
-
-    const urls = {
-      route: options.route,
-      index: options.index || `${base}/${resource}/index`,
-      destroy: `${base}/${resource}/destroy`
-    }
-
+  static create(params, options) {
     const instance = new this()
 
-    instance.options = options
+    instance.structure = () => Object.assign({}, params)
 
-    instance.structure = structure
+    Object.assign(instance.params, params)
 
-    instance.params = Object.assign(instance.params, structure)
-
-    instance.router = router
-
-    instance.urls = urls
+    instance.api = axios.create(options.axios || {})
 
     return instance
   }
 
-  async fetch(url) {
+  async fetch(path) {
     this.query.isLoading = true
 
     this.query.isLoaded = false
 
-    const { data } = await axios
-      .get(url || this.urls.index, {
-        params: this.params
-      })
-      .catch((error) => {
+    const {data} = await this.api.get(path)
+      .catch(error => {
         this.query.isLoading = false
 
         throw error
       })
-
-    await this.router.push({ name: this.urls.route, query: this.params })
 
     this.query.isLoading = false
 
@@ -72,8 +50,8 @@ export default class ResourceList {
     return data
   }
 
-  async load(url) {
-    const data = await this.fetch(url)
+  async load(path) {
+    const data = await this.fetch(path)
 
     Object.assign(this.query, data.query, {
       items: data.query.items.map((item) => ({
@@ -91,7 +69,7 @@ export default class ResourceList {
     return this.load()
   }
 
-  async action(path, { row, index, remove, method }, attributes = {}) {
+  async action(path, {item: {row, index}, remove, method}, attributes = {}) {
     row.isProcessing = true
 
     const payload = {
@@ -100,7 +78,7 @@ export default class ResourceList {
     }
 
     if (method === 'delete') {
-      const { data } = await axios
+      const {data} = await this.api
         .delete(path, {
           data: payload
         })
@@ -116,7 +94,7 @@ export default class ResourceList {
         Object.assign(row, data.row)
       }
     } else {
-      const { data } = await axios.post(path, payload).catch((error) => {
+      const {data} = await this.api.post(path, payload).catch((error) => {
         row.isProcessing = false
 
         throw error
@@ -148,8 +126,12 @@ export default class ResourceList {
     }
   }
 
-  destroy(record, payload) {
-    return this.action(this.urls.destroy, { ...record, remove: true }, payload)
+  destroy(url, record, payload) {
+    return this.action(url, {...record, remove: true}, payload)
+  }
+
+  openFilter() {
+    this.query.isFilterActive = true
   }
 
   async resetFilter(url = null) {
