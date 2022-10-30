@@ -19,6 +19,14 @@ export default {
     excludeFormatter: {
       type: Function,
       default: null
+    },
+    restoreFormatter: {
+      type: Function,
+      default: (payload) => payload
+    },
+    payloadFormatter: {
+      type: Function,
+      default: (payload) => payload
     }
   },
   emits: ['update:modelValue'],
@@ -36,9 +44,12 @@ export default {
   },
   async mounted() {
     if (this.modelValue && this.modelValue.length) {
-      const { result } = await this.search.restore(this.path, {
-        values: this.modelValue
-      })
+      const { result } = await this.search.restore(
+        this.path,
+        this.restoreFormatter({
+          values: this.modelValue
+        })
+      )
 
       this.query = result
 
@@ -50,23 +61,32 @@ export default {
   },
   methods: {
     searchTags(value) {
-      return this.search.search(this.path, {
-        value,
-        type: 'service-category',
-        exclude: this.query.map((tag) => tag.id)
-      })
+      return this.search.search(
+        this.path,
+        this.payloadFormatter({
+          value,
+          exclude: this.query.map((tag) => tag.id)
+        })
+      )
     },
     addedTag() {
-      this.$emit(
-        'update:modelValue',
-        this.query.map((value) => this.formatter(value))
-      )
+      const reformat = this.query.map((value) => this.formatter(value))
+
+      console.log('r', reformat)
+
+      this.$emit('update:modelValue', reformat)
     },
     removedTag() {
-      this.$emit(
-        'update:modelValue',
-        this.query.map((value) => this.formatter(value))
-      )
+      const reformat = this.query.map((value) => this.formatter(value))
+
+      console.log('r', reformat)
+
+      this.$emit('update:modelValue', reformat)
+    },
+    reset() {
+      this.query = []
+
+      this.$emit('update:modelValue', this.query)
     }
   }
 }

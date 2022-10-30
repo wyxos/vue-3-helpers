@@ -66,15 +66,17 @@ export default class FormBuilder {
       ? formatter(Object.assign({}, this.form))
       : JSON.parse(JSON.stringify(this.form))
 
-    const { data } = await axios
-      .post(path || this.submitPath, payload, config)
-      .catch((error) => {
-        this.isSubmitting.value = false
+    const { data } = await axios[config.method || 'post'](
+      path || this.submitPath,
+      payload,
+      config
+    ).catch((error) => {
+      this.isSubmitting.value = false
 
-        this.errors.set(error, this.bag)
+      this.errors.set(error, this.bag)
 
-        throw error
-      })
+      throw error
+    })
 
     this.errors.clear(null, this.bag)
 
