@@ -36,7 +36,9 @@ export default class Listing {
 
     this.query.isLoaded = false
 
-    const {data} = await this.api.get(path)
+    const {data} = await this.api.get(path, {
+      params: this.params
+    })
       .catch(error => {
         this.query.isLoading = false
 
@@ -51,7 +53,9 @@ export default class Listing {
   }
 
   async load(path) {
-    const data = await this.fetch(path)
+    const data = await this.fetch(path, {
+      params: this.params
+    })
 
     Object.assign(this.query, data.query, {
       items: data.query.items.map((item) => ({
