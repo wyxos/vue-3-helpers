@@ -5,7 +5,7 @@ import useFormErrors from './formErrors'
 export default class FormBuilder {
   loadPath = ''
   submitPath = ''
-  bag = 'default'
+  bag = ''
   model = reactive({})
   form = reactive({})
   original = reactive({})
@@ -20,7 +20,7 @@ export default class FormBuilder {
 
     this.loadPath = options.loadPath
 
-    this.setErrors(options.errorBag)
+    this.setErrors(options.bag)
 
     this.setAttributes(options.form)
   }
@@ -34,7 +34,7 @@ export default class FormBuilder {
   }
 
   setErrors(bag) {
-    this.bag = bag
+    this.bag = bag || 'default'
 
     this.errors = useFormErrors()
 
