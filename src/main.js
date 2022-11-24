@@ -11,7 +11,7 @@ import WyxosImage from './WyxosImage.vue'
 import WyxosInput from './WyxosInput.vue'
 import WyxosTags from './WyxosTags.vue'
 
-export {
+export default {
   AutoCompleteSearch,
   FormBuilder,
   ResourceList,
