@@ -76,7 +76,7 @@ class O {
   constructor(t) {
     u(this, "loadPath", "");
     u(this, "submitPath", "");
-    u(this, "bag", "default");
+    u(this, "bag", "");
     u(this, "model", c({}));
     u(this, "form", c({}));
     u(this, "original", c({}));
@@ -85,7 +85,7 @@ class O {
     u(this, "isSubmitting", p(!1));
     u(this, "isSubmitted", p(!1));
     u(this, "errors", null);
-    this.setPath(t.submitPath), this.loadPath = t.loadPath, this.setErrors(t.errorBag), this.setAttributes(t.form);
+    this.setPath(t.submitPath), this.loadPath = t.loadPath, this.setErrors(t.bag), this.setAttributes(t.form);
   }
   static create(t) {
     return new O(t);
@@ -94,7 +94,7 @@ class O {
     this.submitPath = t;
   }
   setErrors(t) {
-    this.bag = t, this.errors = L(), this.errors.createBag(this.bag);
+    this.bag = t || "default", this.errors = L(), this.errors.createBag(this.bag);
   }
   setAttributes(t) {
     Object.assign(this.form, t), Object.assign(this.original, t);
@@ -316,7 +316,7 @@ const f = (s, t) => {
       type: Boolean
     }
   }
-}, z = /* @__PURE__ */ P("Submit"), B = /* @__PURE__ */ P("Processing..."), N = {
+}, z = /* @__PURE__ */ P("Submit"), N = /* @__PURE__ */ P("Processing..."), B = {
   key: 2,
   class: "fas fa-spinner fa-spin"
 };
@@ -328,9 +328,9 @@ function C(s, t, e, a, i, n) {
         z
       ]),
       e.loading ? q(s.$slots, "loading", { key: 1 }, () => [
-        B
+        N
       ]) : b("", !0),
-      e.loading ? (d(), _("i", N)) : b("", !0)
+      e.loading ? (d(), _("i", B)) : b("", !0)
     ]),
     _: 3
   }, 8, ["disabled"]);
