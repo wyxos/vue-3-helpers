@@ -14,7 +14,9 @@ export default {
     },
     bag: {
       type: String,
-      default: 'default'
+      default: () => {
+          return 'default'
+      }
     }
   },
   setup() {

@@ -512,7 +512,7 @@ const ct = /* @__PURE__ */ f(G, [["render", K]]), X = {
     },
     bag: {
       type: String,
-      default: "default"
+      default: () => "default"
     }
   },
   setup() {
