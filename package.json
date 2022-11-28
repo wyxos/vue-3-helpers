@@ -1,8 +1,8 @@
 {
   "name": "@wyxos/vue-3-helpers",
-  "version": "1.1.13",
+  "version": "1.1.14",
   "description": "",
-  "main": "dist/vue-helpers.js",
+  "main": "dist/vue-helpers.umd.js",
   "scripts": {
     "dev": "vite --config demo/vite.config.js",
     "build": "vite --config demo/vite.config.js build",
