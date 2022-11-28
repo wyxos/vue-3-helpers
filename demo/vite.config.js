@@ -10,6 +10,11 @@ export default defineConfig({
     port: 3000
   },
   plugins: [vue()],
+  resolve: {
+    dedupe: [
+      'vue'
+    ]
+  },
   build: {
     outDir: '../dist',
     lib: {
@@ -21,15 +26,12 @@ export default defineConfig({
     rollupOptions: {
       // make sure to externalize deps that shouldn't be bundled
       // into your library
-      external: [json.dependencies],
+      external: ['vue'],
       output: {
         // Provide global variables to use in the UMD build
         // for externalized deps
         globals: {
-          vue: 'Vue',
-          "@oruga-ui/oruga-next": "Oruga",
-          "axios": "axios",
-          "moment": "moment"
+          vue: 'Vue'
         }
       }
     }
