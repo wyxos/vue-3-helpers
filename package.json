@@ -2,7 +2,7 @@
   "name": "@wyxos/vue-3-helpers",
   "version": "1.1.10",
   "description": "",
-  "main": "src/main",
+  "main": "dist/vue-helpers",
   "scripts": {
     "dev": "vite --config demo/vite.config.js",
     "build": "vite --config demo/vite.config.js build",
@@ -15,7 +15,6 @@
   "license": "ISC",
   "dependencies": {
     "@oruga-ui/oruga-next": "^0.5.5",
-    "@oruga-ui/theme-bulma": "^0.2.6",
     "axios": "^0.27.2",
     "moment": "^2.29.4",
     "vue": "^3.2.37"
