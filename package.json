@@ -6,8 +6,14 @@
   "files": [
     "dist"
   ],
-  "main": "./dist/vue-helpers.js",
+  "main": "./dist/vue-helpers.umd.cjs",
   "module": "./dist/vue-helpers.js",
+  "exports": {
+    ".": {
+      "import": "./dist/vue-helpers.js",
+      "require": "./dist/vue-helpers.umd.cjs"
+    }
+  },
   "scripts": {
     "dev": "vite --config demo/vite.config.js",
     "build": "vite --config demo/vite.config.js build",
