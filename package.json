@@ -1,6 +1,6 @@
 {
   "name": "@wyxos/vue-3-helpers",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "",
   "type": "module",
   "files": [
@@ -22,7 +22,10 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
-    "vue", "helper functions", "helper components", "oruga helpers"
+    "vue",
+    "helper functions",
+    "helper components",
+    "oruga helpers"
   ],
   "author": "Wyxos",
   "license": "ISC",
