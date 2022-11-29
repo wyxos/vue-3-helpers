@@ -1,25 +1,34 @@
-import {reactive} from 'vue'
+import { reactive } from 'vue'
 import axios from 'axios'
+import State from './State'
 
 export default class Listing {
   api = null
 
+  baseUrl = null
+
   structure = null
+
+  states = {
+    fetch: new State(),
+    filter: new State()
+  }
 
   query = reactive({
     items: [],
     perPage: 0,
-    total: 0,
-    isLoading: false,
-    isLoaded: false,
-    isFilterActive: false
+    total: 0
   })
 
   params = reactive({
     page: 1
   })
 
-  static create(params, options) {
+  state = reactive({
+    isFilterActive: false
+  })
+
+  static create (params, options) {
     const instance = new this()
 
     instance.structure = () => Object.assign({}, params)
@@ -28,34 +37,38 @@ export default class Listing {
 
     instance.api = axios.create(options.axios || {})
 
+    instance.baseUrl = options.baseUrl
+
     return instance
   }
 
-  async fetch(path) {
-    this.query.isLoading = true
+  async fetch (path) {
+    this.states.fetch.loading()
 
-    this.query.isLoaded = false
-
-    const {data} = await this.api.get(path, {
+    const { data } = await this.api.get(path || this.baseUrl, {
       params: this.params
     })
       .catch(error => {
-        this.query.isLoading = false
+        this.states.fetch.failed()
 
         throw error
       })
 
-    this.query.isLoading = false
+    this.states.fetch.loaded()
 
-    this.query.isLoaded = true
+    const base = window.location.href.replace(/\?.*/, '')
+
+    const query = new URLSearchParams(this.params)
+
+    const url = base + '?' + query.toString()
+
+    window.history.pushState({}, '', url)
 
     return data
   }
 
-  async load(path) {
-    const data = await this.fetch(path, {
-      params: this.params
-    })
+  async load (path) {
+    const data = await this.fetch(path)
 
     Object.assign(this.query, data.query, {
       items: data.query.items.map((item) => ({
@@ -67,13 +80,13 @@ export default class Listing {
     return data
   }
 
-  onPageChange(value) {
+  onPageChange (value) {
     this.params.page = value
 
     return this.load()
   }
 
-  async action(path, {item: {row, index}, remove, method}, attributes = {}) {
+  async action (path, { item: { row, index }, remove, method }, attributes = {}) {
     row.isProcessing = true
 
     const payload = {
@@ -82,7 +95,7 @@ export default class Listing {
     }
 
     if (method === 'delete') {
-      const {data} = await this.api
+      const { data } = await this.api
         .delete(path, {
           data: payload
         })
@@ -98,7 +111,7 @@ export default class Listing {
         Object.assign(row, data.row)
       }
     } else {
-      const {data} = await this.api.post(path, payload).catch((error) => {
+      const { data } = await this.api.post(path, payload).catch((error) => {
         row.isProcessing = false
 
         throw error
@@ -130,18 +143,48 @@ export default class Listing {
     }
   }
 
-  destroy(url, record, payload) {
-    return this.action(url, {...record, remove: true}, payload)
+  destroy (url, record, payload) {
+    return this.action(url, { ...record, remove: true }, payload)
   }
 
-  openFilter() {
-    this.query.isFilterActive = true
+  get isLoading () {
+    return this.states.fetch.isLoading
   }
 
-  async resetFilter(url = null) {
+  get isLoaded () {
+    return this.states.fetch.isLoaded
+  }
+
+  get isFailure () {
+    return this.states.fetch.isFailure
+  }
+
+  get isFilterLoading () {
+    return this.states.filter.isLoading
+  }
+
+  get isFilterActive () {
+    return this.state.isFilterActive
+  }
+
+  async applyFilter () {
+    await this.load()
+
+    this.state.isFilterActive = false
+  }
+
+  showFilter () {
+    this.state.isFilterActive = true
+  }
+
+  cancelFilter(){
+    this.state.isFilterActive = false
+  }
+
+  async resetFilter (url = null) {
     Object.assign(this.params, this.structure)
 
-    this.query.isFilterActive = false
+    this.state.isFilterActive = false
 
     await this.load(url)
   }
