@@ -31,7 +31,7 @@ export default class Listing {
   static create (params, options) {
     const instance = new this()
 
-    instance.structure = () => Object.assign({}, params)
+    instance.structure = Object.assign({}, params)
 
     Object.assign(instance.params, params)
 
@@ -40,6 +40,15 @@ export default class Listing {
     instance.baseUrl = options.baseUrl
 
     return instance
+  }
+
+  tableConfig(){
+    return {
+      data: this.query.items,
+      total: this.query.total,
+      perPage: this.query.perPage,
+      loading: this.isLoading
+    }
   }
 
   async fetch (path) {
