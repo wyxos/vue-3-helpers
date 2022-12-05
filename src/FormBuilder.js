@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { reactive, ref } from 'vue'
 import useFormErrors from './formErrors'
+import State from './State.js'
 
 export default class FormBuilder {
   loadPath = ''
@@ -9,11 +10,8 @@ export default class FormBuilder {
   model = reactive({})
   form = reactive({})
   original = reactive({})
-  isLoading = ref(false)
-  isLoaded = ref(true)
-  isSubmitting = ref(false)
-  isSubmitted = ref(false)
   errors = null
+  state = new State()
 
   constructor(options) {
     this.setPath(options.submitPath)
@@ -58,9 +56,7 @@ export default class FormBuilder {
   async submit(path, formatter, config = {}) {
     this.errors.clear(null, this.bag)
 
-    this.isSubmitting.value = true
-
-    this.isSubmitted.value = false
+    this.state.loading()
 
     const payload = formatter
       ? formatter(Object.assign({}, this.form))
@@ -71,7 +67,7 @@ export default class FormBuilder {
       payload,
       config
     ).catch((error) => {
-      this.isSubmitting.value = false
+      this.state.failed()
 
       this.errors.set(error, this.bag)
 
@@ -82,21 +78,17 @@ export default class FormBuilder {
 
     Object.assign(this.original, JSON.parse(JSON.stringify(this.form)))
 
-    this.isSubmitting.value = false
-
-    this.isSubmitted.value = true
+    this.state.loaded()
 
     return data
   }
 
   async advancedSubmit(callback) {
-    this.isSubmitting.value = true
-
-    this.isSubmitted.value = false
+    this.state.loading()
 
     const { data } = await Promise.resolve(callback(axios, this.form)).catch(
       (error) => {
-        this.isSubmitting.value = false
+        this.state.failed()
 
         this.errors.set(error, this.bag)
 
@@ -104,26 +96,20 @@ export default class FormBuilder {
       }
     )
 
-    this.isSubmitting.value = false
-
-    this.isSubmitted.value = true
+    this.state.loaded()
 
     return data
   }
 
   async load(path, params) {
-    this.isLoading.value = true
-
-    this.isLoaded.value = false
+    this.state.loading()
 
     const { data } = await axios
       .get(path || this.loadPath, {
         params
       })
       .catch((error) => {
-        this.isLoading.value = false
-
-        this.isLoaded.value = false
+        this.state.failed()
 
         throw error
       })
@@ -134,14 +120,24 @@ export default class FormBuilder {
       Object.assign(this.model, data.model)
     }
 
-    this.isLoading.value = false
-
-    this.isLoaded.value = true
+    this.state.loaded()
 
     return data
   }
 
   reset() {
     Object.assign(this.form, JSON.parse(JSON.stringify(this.original)))
+  }
+
+  get isLoading () {
+    return this.state.isLoading
+  }
+
+  get isLoaded () {
+    return this.state.isLoaded
+  }
+
+  get isFailure () {
+    return this.state.isFailure
   }
 }
