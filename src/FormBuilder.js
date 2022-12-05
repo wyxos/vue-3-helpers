@@ -11,7 +11,10 @@ export default class FormBuilder {
   form = reactive({})
   original = reactive({})
   errors = null
-  state = new State()
+  states = {
+    load: new State(),
+    submit: new State()
+  }
 
   constructor(options) {
     this.setPath(options.submitPath)
@@ -56,7 +59,7 @@ export default class FormBuilder {
   async submit(path, formatter, config = {}) {
     this.errors.clear(null, this.bag)
 
-    this.state.loading()
+    this.states.submit.loading()
 
     const payload = formatter
       ? formatter(Object.assign({}, this.form))
@@ -67,7 +70,7 @@ export default class FormBuilder {
       payload,
       config
     ).catch((error) => {
-      this.state.failed()
+      this.states.submit.failed()
 
       this.errors.set(error, this.bag)
 
@@ -78,17 +81,17 @@ export default class FormBuilder {
 
     Object.assign(this.original, JSON.parse(JSON.stringify(this.form)))
 
-    this.state.loaded()
+    this.states.submit.loaded()
 
     return data
   }
 
   async advancedSubmit(callback) {
-    this.state.loading()
+    this.states.submit.loading()
 
     const { data } = await Promise.resolve(callback(axios, this.form)).catch(
       (error) => {
-        this.state.failed()
+        this.states.submit.failed()
 
         this.errors.set(error, this.bag)
 
@@ -96,20 +99,20 @@ export default class FormBuilder {
       }
     )
 
-    this.state.loaded()
+    this.states.submit.loaded()
 
     return data
   }
 
   async load(path, params) {
-    this.state.loading()
+    this.states.load.loading()
 
     const { data } = await axios
       .get(path || this.loadPath, {
         params
       })
       .catch((error) => {
-        this.state.failed()
+        this.states.load.failed()
 
         throw error
       })
@@ -120,7 +123,7 @@ export default class FormBuilder {
       Object.assign(this.model, data.model)
     }
 
-    this.state.loaded()
+    this.states.load.loaded()
 
     return data
   }
@@ -129,15 +132,27 @@ export default class FormBuilder {
     Object.assign(this.form, JSON.parse(JSON.stringify(this.original)))
   }
 
+  get isSubmitting () {
+    return this.states.submit.isLoading
+  }
+
+  get isSubmitted () {
+    return this.states.submit.isLoaded
+  }
+
+  get isSubmitFailed () {
+    return this.states.submit.isFailure
+  }
+
   get isLoading () {
-    return this.state.isLoading
+    return this.states.fetch.isLoading
   }
 
   get isLoaded () {
-    return this.state.isLoaded
+    return this.states.fetch.isLoaded
   }
 
   get isFailure () {
-    return this.state.isFailure
+    return this.states.fetch.isFailure
   }
 }
