@@ -1,14 +1,14 @@
 <template>
   <div>
     <form
-      v-if="form.isLoaded.value"
+      v-if="form.isLoaded"
       class="form"
       @submit.prevent="$emit('submit')">
       <slot></slot>
     </form>
-    <o-loading :active="form.isLoading.value"></o-loading>
+    <o-loading :active="form.isLoading"></o-loading>
     <o-button
-      v-if="!form.isLoaded.value && !form.isLoading.value"
+      v-if="!form.isLoaded && !form.isLoading"
       @click="form.load()">
       An error occurred. Try again?
     </o-button>
@@ -16,11 +16,13 @@
 </template>
 
 <script>
+import FormBuilder from './FormBuilder.js'
+
 export default {
   name: 'WyxosForm',
   props: {
     form: {
-      type: Object,
+      type: FormBuilder,
       required: true
     }
   },

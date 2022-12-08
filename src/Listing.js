@@ -79,6 +79,12 @@ export default class Listing {
   async load (path) {
     const data = await this.fetch(path)
 
+    if(!data.query || !data.query.items){
+      this.states.fetch.failed()
+
+      throw Error('Response format is invalid.')
+    }
+
     Object.assign(this.query, data.query, {
       items: data.query.items.map((item) => ({
         ...item,
@@ -95,7 +101,7 @@ export default class Listing {
     return this.load()
   }
 
-  async action (path, { item: { row, index }, remove, method }, attributes = {}) {
+  async action (path, { row, index, remove, method }, attributes = {}) {
     row.isProcessing = true
 
     const payload = {
@@ -103,22 +109,42 @@ export default class Listing {
       ...attributes
     }
 
-    if (method === 'delete') {
-      const { data } = await this.api
-        .delete(path, {
+    if (['delete', 'patch'].includes(method)) {
+      if(method === 'delete'){
+        const { data } = await this.api.delete(path || this.baseUrl, {
           data: payload
         })
-        .catch((error) => {
-          row.isProcessing = false
+          .catch((error) => {
+            row.isProcessing = false
 
-          throw error
-        })
+            throw error
+          })
 
-      row.isProcessing = false
+        row.isProcessing = false
 
-      if (data.row) {
-        Object.assign(row, data.row)
+        if (data.row) {
+          Object.assign(row, data.row)
+        }
       }
+      else{
+        const { data } = await this.api
+          [method](path || this.baseUrl, {
+          ...payload
+        })
+          .catch((error) => {
+            row.isProcessing = false
+
+            throw error
+          })
+
+        row.isProcessing = false
+
+        if (data.row) {
+          Object.assign(row, data.row)
+        }
+      }
+
+
     } else {
       const { data } = await this.api.post(path, payload).catch((error) => {
         row.isProcessing = false
@@ -152,8 +178,12 @@ export default class Listing {
     }
   }
 
-  destroy (url, record, payload) {
-    return this.action(url, { ...record, remove: true }, payload)
+  patch(url, record, payload){
+    return this.action(url, { method: 'patch', ...record }, payload)
+  }
+
+  delete (url, record, payload) {
+    return this.action(url, { remove: true, method: 'delete', ...record }, payload)
   }
 
   get isLoading () {

@@ -145,14 +145,14 @@ export default class FormBuilder {
   }
 
   get isLoading () {
-    return this.states.fetch.isLoading
+    return this.states.load.isLoading
   }
 
   get isLoaded () {
-    return this.states.fetch.isLoaded
+    return this.states.load.isLoaded
   }
 
   get isFailure () {
-    return this.states.fetch.isFailure
+    return this.states.load.isFailure
   }
 }
