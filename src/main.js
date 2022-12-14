@@ -10,6 +10,7 @@ import WyxosForm from './WyxosForm.vue'
 import WyxosImage from './WyxosImage.vue'
 import WyxosInput from './WyxosInput.vue'
 import WyxosTags from './WyxosTags.vue'
+import WyxosPrompt from './WyxosPrompt.vue'
 
 export {
   AutoCompleteSearch,
@@ -24,6 +25,7 @@ export {
   WyxosImage,
   WyxosInput,
   WyxosTags,
+  WyxosPrompt
 }
 
 export default {
@@ -39,4 +41,5 @@ export default {
   WyxosImage,
   WyxosInput,
   WyxosTags,
+  WyxosPrompt
 }
