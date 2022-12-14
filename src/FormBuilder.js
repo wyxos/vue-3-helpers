@@ -24,6 +24,8 @@ export default class FormBuilder {
     this.setErrors(options.bag)
 
     this.setAttributes(options.form)
+
+    this.states.load.loaded()
   }
 
   static create(options) {
