@@ -1,1 +1,1 @@
-Vue 3 Helpers for projects using Laravel, Bulma and Oruga
+Vue 3 Helpers for projects using Laravel, TailwindCss and Oruga
