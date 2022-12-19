@@ -1,5 +1,5 @@
 <script>
-import LoadState from './State.js'
+import LoadState from './LoadState.js'
 
 export default {
     name: 'WyxosPrompt',
@@ -30,16 +30,18 @@ export default {
     },
     methods: {
         async proceed(){
-            this.state.loading()
+            if(this.callback){
+                this.state.loading()
 
-            await this.callback()
-                .catch(error => {
-                    this.state.failed()
+                await this.callback()
+                    .catch(error => {
+                        this.state.failed()
 
-                    throw error
-                })
+                        throw error
+                    })
 
-            this.state.loaded()
+                this.state.loaded()
+            }
 
             this.$emit('close', {action: true})
         }

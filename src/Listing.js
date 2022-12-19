@@ -1,6 +1,6 @@
 import { reactive } from 'vue'
 import axios from 'axios'
-import State from './State'
+import LoadState from './LoadState.js'
 
 export default class Listing {
   api = null
@@ -9,9 +9,11 @@ export default class Listing {
 
   structure = null
 
+  options = null
+
   states = {
-    fetch: new State(),
-    filter: new State()
+    fetch: new LoadState(),
+    filter: new LoadState()
   }
 
   query = reactive({
@@ -31,18 +33,43 @@ export default class Listing {
   static create (params, options) {
     const instance = new this()
 
+    if (!params) {
+      throw Error('Structure of search query required.')
+    }
+
     instance.structure = Object.assign({}, params)
+
+    instance.options = Object.assign({
+      enableSearchUpdate: true,
+      transformItems: (item) => item
+    }, options)
 
     Object.assign(instance.params, params)
 
-    instance.api = axios.create(options.axios || {})
+    if (instance.options.enableSearchUpdate) {
+      instance.mergeSearch()
+    }
 
     instance.baseUrl = options.baseUrl
+
+    instance.api = axios.create(options.axios || {})
 
     return instance
   }
 
-  tableConfig(){
+  mergeSearch () {
+    const urlParams = new URLSearchParams(window.location.search.substring(1))
+
+    const query = {}
+
+    for (const [key, value] of urlParams.entries()) {
+      query[key] = value
+    }
+
+    Object.assign(this.params, this.structure, query)
+  }
+
+  tableConfig () {
     return {
       data: this.query.items,
       total: this.query.total,
@@ -55,7 +82,7 @@ export default class Listing {
     this.states.fetch.loading()
 
     const { data } = await this.api.get(path || this.baseUrl, {
-      params: this.params
+      params: JSON.parse(JSON.stringify(this.params))
     })
       .catch(error => {
         this.states.fetch.failed()
@@ -65,31 +92,44 @@ export default class Listing {
 
     this.states.fetch.loaded()
 
+    if (this.options.enableSearchUpdate) {
+      this.refreshUrl()
+    }
+
+    return data
+  }
+
+  refreshUrl () {
     const base = window.location.href.replace(/\?.*/, '')
 
-    const query = new URLSearchParams(this.params)
+    const query = new URLSearchParams(JSON.parse(JSON.stringify(this.params)))
 
     const url = base + '?' + query.toString()
 
     window.history.pushState({}, '', url)
+  }
 
-    return data
+  transformItem (item) {
+    return this.options.transformItems({
+      ...item,
+      states: {
+        delete: new LoadState,
+        patch: new LoadState
+      }
+    })
   }
 
   async load (path) {
     const data = await this.fetch(path)
 
-    if(!data.query || !data.query.items){
+    if (!data.query || !data.query.items) {
       this.states.fetch.failed()
 
       throw Error('Response format is invalid.')
     }
 
     Object.assign(this.query, data.query, {
-      items: data.query.items.map((item) => ({
-        ...item,
-        isProcessing: false
-      }))
+      items: data.query.items.map(item => this.transformItem(item))
     })
 
     return data
@@ -101,89 +141,77 @@ export default class Listing {
     return this.load()
   }
 
-  async action (path, { row, index, remove, method }, attributes = {}) {
-    row.isProcessing = true
+  async patch (options) {
+    const { path, action, attributes } = options
+
+    const { row, index } = action
 
     const payload = {
       id: row.id,
       ...attributes
     }
 
-    if (['delete', 'patch'].includes(method)) {
-      if(method === 'delete'){
-        const { data } = await this.api.delete(path || this.baseUrl, {
-          data: payload
-        })
-          .catch((error) => {
-            row.isProcessing = false
+    const { data } = await this.api.delete(path || this.baseUrl, {
+      data: payload
+    })
+      .catch((error) => {
+        throw error
+      })
 
-            throw error
-          })
+    if (data.row) {
+      Object.assign(row, data.row)
+    }
 
-        row.isProcessing = false
+  }
 
-        if (data.row) {
-          Object.assign(row, data.row)
-        }
-      }
-      else{
-        const { data } = await this.api
-          [method](path || this.baseUrl, {
-          ...payload
-        })
-          .catch((error) => {
-            row.isProcessing = false
+  async delete (options) {
+    const { path, action, attributes } = options
 
-            throw error
-          })
+    const { row, index } = action
 
-        row.isProcessing = false
+    const payload = {
+      id: row.id,
+      ...attributes
+    }
 
-        if (data.row) {
-          Object.assign(row, data.row)
-        }
-      }
+    row.states.delete.loading()
 
-
-    } else {
-      const { data } = await this.api.post(path, payload).catch((error) => {
-        row.isProcessing = false
+    const { data } = await this.api.delete(path || this.baseUrl, {
+      data: payload
+    })
+      .catch((error) => {
+        row.states.delete.failed()
 
         throw error
       })
 
-      row.isProcessing = false
+    row.states.delete.loaded()
 
-      if (data.row) {
-        Object.assign(row, data.row)
-      }
+    if (data.row) {
+      Object.assign(row, data.row)
     }
 
-    if (remove) {
-      const data = await this.fetch()
+    const fetch = await this.fetch()
 
-      this.query.items.splice(index, 1)
+    this.query.items.splice(index, 1)
 
-      if (!data.query.items.length) {
-        this.params.page--
+    if (!fetch.query.items.length) {
+      this.params.page--
 
-        await this.load()
+      await this.load()
 
-        return
-      }
-
-      if (this.query.items.length < data.query.items.length) {
-        this.query.items.push(data.query.items[data.query.items.length - 1])
-      }
+      return
     }
-  }
 
-  patch(url, record, payload){
-    return this.action(url, { method: 'patch', ...record }, payload)
-  }
+    if (this.query.items.length < fetch.query.items.length) {
+      const item = fetch.query.items[fetch.query.items.length - 1]
 
-  delete (url, record, payload) {
-    return this.action(url, { remove: true, method: 'delete', ...record }, payload)
+      this.query.items.push(
+        this.transformItem(
+          item
+        )
+      )
+    }
   }
 
   get isLoading () {
@@ -216,7 +244,7 @@ export default class Listing {
     this.state.isFilterActive = true
   }
 
-  cancelFilter(){
+  cancelFilter () {
     this.state.isFilterActive = false
   }
 
