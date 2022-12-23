@@ -43,3 +43,9 @@ execSyncOut('git add .')
 execSyncOut(`git commit -m ${message}`)
 
 execSyncOut('git push')
+
+execSyncOut(`git tag -l "v${version}*"`)
+
+execSyncOut(`git push origin v${version}`)
+
+

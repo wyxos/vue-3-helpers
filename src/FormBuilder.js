@@ -6,6 +6,7 @@ import State from './LoadState.js'
 export default class FormBuilder {
   loadPath = ''
   submitPath = ''
+  submitMethod = 'post'
   bag = ''
   model = reactive({})
   form = reactive({})
@@ -19,6 +20,8 @@ export default class FormBuilder {
   constructor(options) {
     this.setPath(options.submitPath)
 
+    this.submitMethod = options.submitMethod
+
     this.loadPath = options.loadPath
 
     this.setErrors(options.bag)
@@ -29,7 +32,30 @@ export default class FormBuilder {
   }
 
   static create(options) {
-    return new FormBuilder(options)
+    return new Proxy(new FormBuilder(options), {
+      get(target, name, receiver){
+        if (!Reflect.has(target, name)) {
+          if(name in target.form){
+            return target.form[name]
+          }
+
+          return null
+        }
+
+        return Reflect.get(target, name, receiver);
+      },
+      set(target, name, value, receiver) {
+        if (!Reflect.has(target, name)) {
+          if(name in target.form){
+            return target.form[name] = value
+          }
+
+          return null
+        }
+
+        return Reflect.set(target, name, value, receiver);
+      }
+    })
   }
 
   setPath(path) {
