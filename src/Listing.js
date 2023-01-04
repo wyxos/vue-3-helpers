@@ -31,6 +31,10 @@ export default class Listing {
   })
 
   static create (params, options) {
+    if(!options){
+      throw Error('Listing options have not been provided.')
+    }
+
     const instance = new this()
 
     if (!params) {

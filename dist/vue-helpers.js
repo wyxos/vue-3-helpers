@@ -1239,6 +1239,8 @@ class Xi {
     }));
   }
   static create(t, r) {
+    if (!r)
+      throw Error("Listing options have not been provided.");
     const s = new this();
     if (!t)
       throw Error("Structure of search query required.");
