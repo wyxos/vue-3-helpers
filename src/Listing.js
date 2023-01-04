@@ -37,11 +37,11 @@ export default class Listing {
       throw Error('Structure of search query required.')
     }
 
-    instance.structure = Object.assign({}, params)
+    instance.structure = Object.assign({}, JSON.parse(JSON.stringify(params)))
 
     instance.options = Object.assign({
       enableSearchUpdate: true,
-      transformItems: (item) => item
+      transformItem: (item) => item
     }, options)
 
     Object.assign(instance.params, params)
@@ -99,6 +99,18 @@ export default class Listing {
     return data
   }
 
+  async reload(path){
+    const { data } = await this.api.get(path || this.baseUrl, {
+      params: JSON.parse(JSON.stringify(this.params))
+    })
+
+    Object.assign(this.query, data.query, {
+      items: data.query.items.map(item => this.transformItem(item))
+    })
+
+    return data
+  }
+
   refreshUrl () {
     const base = window.location.href.replace(/\?.*/, '')
 
@@ -109,8 +121,16 @@ export default class Listing {
     window.history.pushState({}, '', url)
   }
 
+  push(item){
+    this.query.items.push(
+      this.transformItem(
+        item
+      )
+    )
+  }
+
   transformItem (item) {
-    return this.options.transformItems({
+    return this.options.transformItem({
       ...item,
       states: {
         delete: new LoadState,
@@ -142,32 +162,45 @@ export default class Listing {
   }
 
   async patch (options) {
-    const { path, action, attributes } = options
+    const { path, props, attributes } = options
 
-    const { row, index } = action
+    const { row, index } = props
 
     const payload = {
       id: row.id,
       ...attributes
     }
 
-    const { data } = await this.api.delete(path || this.baseUrl, {
-      data: payload
-    })
+    const { data } = await this.api.patch(path || this.baseUrl, payload)
       .catch((error) => {
         throw error
       })
 
-    if (data.row) {
-      Object.assign(row, data.row)
+    if (data.patch) {
+      Object.assign(row, data.patch)
     }
 
+    const fetch = await this.fetch()
+
+    if (!fetch.query.items.length) {
+      this.params.page--
+
+      await this.load()
+
+      return data
+    }
+
+    // filter items to remove
+
+    // filter items to add
+
+    return data
   }
 
   async delete (options) {
-    const { path, action, attributes } = options
+    const { path, props, attributes } = options
 
-    const { row, index } = action
+    const { row, index } = props
 
     const payload = {
       id: row.id,
@@ -200,18 +233,16 @@ export default class Listing {
 
       await this.load()
 
-      return
+      return data
     }
 
     if (this.query.items.length < fetch.query.items.length) {
       const item = fetch.query.items[fetch.query.items.length - 1]
 
-      this.query.items.push(
-        this.transformItem(
-          item
-        )
-      )
+      this.push(item)
     }
+
+    return data
   }
 
   get isLoading () {

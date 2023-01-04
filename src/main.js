@@ -1,4 +1,4 @@
-import AutoCompleteSearch from './AutoCompleteSearch'
+import Search from './Search.js'
 import FormBuilder from './FormBuilder'
 import ResourceList from './ResourceList'
 import Listing from './Listing'
@@ -12,13 +12,15 @@ import WyxosImage from './WyxosImage.vue'
 import WyxosInput from './WyxosInput.vue'
 import WyxosTags from './WyxosTags.vue'
 import WyxosPrompt from './WyxosPrompt.vue'
+import Modal from './Modal'
 
 export {
-  AutoCompleteSearch,
+  Search,
   FormBuilder,
   ResourceList,
   Listing,
   LoadState,
+  Modal,
   useFormErrors,
   WyxosButton,
   WyxosCollection,
@@ -31,11 +33,12 @@ export {
 }
 
 export default {
-  AutoCompleteSearch,
+  Search,
   FormBuilder,
   ResourceList,
   Listing,
   LoadState,
+  Modal,
   useFormErrors,
   WyxosButton,
   WyxosCollection,

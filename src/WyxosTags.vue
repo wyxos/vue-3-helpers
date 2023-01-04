@@ -1,5 +1,5 @@
 <script>
-import AutoCompleteSearch from './AutoCompleteSearch'
+import Search from './Search.js'
 
 export default {
   name: 'WyxosTags',
@@ -31,7 +31,7 @@ export default {
   },
   emits: ['update:modelValue'],
   setup() {
-    const search = AutoCompleteSearch.create()
+    const search = Search.create()
 
     return {
       search
@@ -61,12 +61,14 @@ export default {
   },
   methods: {
     searchTags(value) {
-      return this.search.search(
-        this.path,
-        this.payloadFormatter({
-          value,
-          exclude: this.query.map((tag) => tag.id)
-        })
+      return this.search.customSearch(
+          {
+              url: this.path,
+              payload: this.payloadFormatter({
+                  value,
+                  exclude: this.query.map((tag) => tag.id)
+              })
+          }
       )
     },
     addedTag() {

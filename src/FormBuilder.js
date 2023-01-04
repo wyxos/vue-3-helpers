@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { reactive, ref } from 'vue'
 import useFormErrors from './formErrors'
-import State from './LoadState.js'
+import State from './LoadState'
 
 export default class FormBuilder {
   loadPath = ''
@@ -17,7 +17,7 @@ export default class FormBuilder {
     submit: new State()
   }
 
-  constructor(options) {
+  constructor (options) {
     this.setPath(options.submitPath)
 
     this.submitMethod = options.submitMethod
@@ -31,38 +31,40 @@ export default class FormBuilder {
     this.states.load.loaded()
   }
 
-  static create(options) {
+  static create (options) {
     return new Proxy(new FormBuilder(options), {
-      get(target, name, receiver){
+      get (target, name, receiver) {
         if (!Reflect.has(target, name)) {
-          if(name in target.form){
+          if (name in target.form) {
             return target.form[name]
           }
 
           return null
         }
 
-        return Reflect.get(target, name, receiver);
+        return Reflect.get(target, name, receiver)
       },
-      set(target, name, value, receiver) {
+      set (target, name, value, receiver) {
         if (!Reflect.has(target, name)) {
-          if(name in target.form){
-            return target.form[name] = value
+          if (name in target.form) {
+            target.form[name] = value
+
+            return true
           }
 
           return null
         }
 
-        return Reflect.set(target, name, value, receiver);
+        return Reflect.set(target, name, value, receiver)
       }
     })
   }
 
-  setPath(path) {
+  setPath (path) {
     this.submitPath = path
   }
 
-  setErrors(bag) {
+  setErrors (bag) {
     this.bag = bag || 'default'
 
     this.errors = useFormErrors()
@@ -70,31 +72,39 @@ export default class FormBuilder {
     this.errors.createBag(this.bag)
   }
 
-  setAttributes(attributes) {
+  setAttributes (attributes) {
     Object.assign(this.form, attributes)
 
     Object.assign(this.original, attributes)
   }
 
-  getError(key) {
+  getError (key) {
     return this.errors.get(key, this.bag)
   }
 
-  clearError(key) {
+  clearError (key) {
     this.errors.clear(key, this.bag)
   }
 
-  async submit(path, formatter, config = {}) {
+  async submit (path, formatter, config = {}) {
     this.errors.clear(null, this.bag)
 
     this.states.submit.loading()
 
     const payload = formatter
-      ? formatter(Object.assign({}, this.form))
+      ? formatter(JSON.parse(JSON.stringify(this.form)))
       : JSON.parse(JSON.stringify(this.form))
 
-    const { data } = await axios[config.method || 'post'](
-      path || this.submitPath,
+    const url = path || this.submitPath
+
+    if (!url) {
+      this.states.submit.failed()
+
+      throw Error('No url defined.')
+    }
+
+    const { data } = await axios[config.method || this.submitMethod || 'post'](
+      url,
       payload,
       config
     ).catch((error) => {
@@ -114,7 +124,7 @@ export default class FormBuilder {
     return data
   }
 
-  async advancedSubmit(callback) {
+  async advancedSubmit (callback) {
     this.states.submit.loading()
 
     const { data } = await Promise.resolve(callback(axios, this.form)).catch(
@@ -132,7 +142,7 @@ export default class FormBuilder {
     return data
   }
 
-  async load(path, params) {
+  async load (path, params) {
     this.states.load.loading()
 
     const { data } = await axios
@@ -156,7 +166,7 @@ export default class FormBuilder {
     return data
   }
 
-  reset() {
+  reset () {
     Object.assign(this.form, JSON.parse(JSON.stringify(this.original)))
   }
 

@@ -1,6 +1,6 @@
 {
   "name": "@wyxos/vue-3-helpers",
-  "version": "2.0.9",
+  "version": "3.0.0",
   "description": "",
   "type": "module",
   "files": [
@@ -17,6 +17,7 @@
   "scripts": {
     "dev": "vite --config demo/vite.config.js",
     "build": "vite --config demo/vite.config.js build",
+    "watch": "npm run build -- --watch",
     "release": "node release.mjs",
     "preview": "vite preview",
     "test": "echo \"Error: no test specified\" && exit 1"
