@@ -10,7 +10,7 @@ export default class FormBuilder {
   bag = ''
   model = reactive({})
   form = reactive({})
-  original = reactive({})
+  original = {}
   errors = null
   states = {
     load: new State(),
@@ -73,9 +73,9 @@ export default class FormBuilder {
   }
 
   setAttributes (attributes) {
-    Object.assign(this.form, attributes)
-
     Object.assign(this.original, attributes)
+
+    Object.assign(this.form, attributes)
   }
 
   getError (key) {
@@ -91,9 +91,11 @@ export default class FormBuilder {
 
     this.states.submit.loading()
 
+    const cleanJson = JSON.parse(JSON.stringify(this.form))
+
     const payload = formatter
-      ? formatter(JSON.parse(JSON.stringify(this.form)))
-      : JSON.parse(JSON.stringify(this.form))
+      ? formatter(cleanJson)
+      : cleanJson
 
     const url = path || this.submitPath
 
@@ -103,7 +105,7 @@ export default class FormBuilder {
       throw Error('No url defined.')
     }
 
-    const { data } = await axios[config.method || this.submitMethod || 'post'](
+    const { data } = await axios[config?.method || this.submitMethod || 'post'](
       url,
       payload,
       config
@@ -116,8 +118,6 @@ export default class FormBuilder {
     })
 
     this.errors.clear(null, this.bag)
-
-    Object.assign(this.original, JSON.parse(JSON.stringify(this.form)))
 
     this.states.submit.loaded()
 
@@ -167,7 +167,7 @@ export default class FormBuilder {
   }
 
   reset () {
-    Object.assign(this.form, JSON.parse(JSON.stringify(this.original)))
+    Object.assign(this.form, this.original)
   }
 
   get isSubmitting () {
