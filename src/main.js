@@ -13,6 +13,18 @@ import WyxosInput from './WyxosInput.vue'
 import WyxosTags from './WyxosTags.vue'
 import WyxosPrompt from './WyxosPrompt.vue'
 import Modal from './Modal'
+import Tab from './Tab'
+
+const install = (app) => {
+  app.component('wyxos-button', WyxosButton)
+  app.component('wyxos-collection', WyxosCollection)
+  app.component('wyxos-datepicker', WyxosDatepicker)
+  app.component('wyxos-form', WyxosForm)
+  app.component('wyxos-image', WyxosImage)
+  app.component('wyxos-input', WyxosInput)
+  app.component('wyxos-tags', WyxosTags)
+  app.component('wyxos-prompt', WyxosPrompt)
+}
 
 export {
   Search,
@@ -21,6 +33,7 @@ export {
   Listing,
   LoadState,
   Modal,
+  Tab,
   useFormErrors,
   WyxosButton,
   WyxosCollection,
@@ -29,7 +42,8 @@ export {
   WyxosImage,
   WyxosInput,
   WyxosTags,
-  WyxosPrompt
+  WyxosPrompt,
+  install
 }
 
 export default {
@@ -47,5 +61,7 @@ export default {
   WyxosImage,
   WyxosInput,
   WyxosTags,
-  WyxosPrompt
+  WyxosPrompt,
+  Tab,
+  install
 }

@@ -86,7 +86,11 @@ export default class FormBuilder {
     this.errors.clear(key, this.bag)
   }
 
-  async submit (path, formatter, config = {}) {
+  async submit (options) {
+    const {
+      path, formatter, config = {}
+    } = options || {}
+
     this.errors.clear(null, this.bag)
 
     this.states.submit.loading()
@@ -105,7 +109,9 @@ export default class FormBuilder {
       throw Error('No url defined.')
     }
 
-    const { data } = await axios[config?.method || this.submitMethod || 'post'](
+    const methods = config?.method || this.submitMethod || 'post'
+
+    const { data } = await axios[methods](
       url,
       payload,
       config
@@ -142,11 +148,24 @@ export default class FormBuilder {
     return data
   }
 
-  async load (path, params) {
+  async load (options) {
+    const {
+      path,
+      params
+    } = options || {}
+
     this.states.load.loading()
 
+    const url = path || this.loadPath
+
+    if (!url) {
+      this.states.load.failed()
+
+      throw Error('Url is not defined for the load method.')
+    }
+
     const { data } = await axios
-      .get(path || this.loadPath, {
+      .get(url, {
         params
       })
       .catch((error) => {

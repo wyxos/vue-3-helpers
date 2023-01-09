@@ -8,7 +8,7 @@
     </form>
     <o-loading :active="form.isLoading"></o-loading>
     <o-button
-      v-if="!form.isLoaded && !form.isLoading"
+      v-if="form.isFailure"
       @click="form.load()">
       An error occurred. Try again?
     </o-button>

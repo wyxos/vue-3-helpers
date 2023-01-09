@@ -74,14 +74,10 @@ export default {
     addedTag() {
       const reformat = this.query.map((value) => this.formatter(value))
 
-      console.log('r', reformat)
-
       this.$emit('update:modelValue', reformat)
     },
     removedTag() {
       const reformat = this.query.map((value) => this.formatter(value))
-
-      console.log('r', reformat)
 
       this.$emit('update:modelValue', reformat)
     },

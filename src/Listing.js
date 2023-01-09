@@ -35,7 +35,7 @@ export default class Listing {
       throw Error('Listing options have not been provided.')
     }
 
-    const instance = new this()
+    const instance = new Listing()
 
     if (!params) {
       throw Error('Structure of search query required.')
@@ -67,7 +67,9 @@ export default class Listing {
     const query = {}
 
     for (const [key, value] of urlParams.entries()) {
-      query[key] = value
+      if(value && value !== 'null'){
+        query[key] = value
+      }
     }
 
     Object.assign(this.params, this.structure, query)
@@ -85,8 +87,14 @@ export default class Listing {
   async fetch (path) {
     this.states.fetch.loading()
 
-    const { data } = await this.api.get(path || this.baseUrl, {
-      params: JSON.parse(JSON.stringify(this.params))
+    const params = JSON.parse(JSON.stringify(this.params))
+
+    console.log(params)
+
+    const url = path || this.baseUrl
+
+    const { data } = await this.api.get(url, {
+      params
     })
       .catch(error => {
         this.states.fetch.failed()
@@ -122,7 +130,7 @@ export default class Listing {
 
     const url = base + '?' + query.toString()
 
-    window.history.pushState({}, '', url)
+    window.history.replaceState({}, '', url)
   }
 
   push(item){
