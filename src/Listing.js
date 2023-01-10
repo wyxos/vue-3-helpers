@@ -89,8 +89,6 @@ export default class Listing {
 
     const params = JSON.parse(JSON.stringify(this.params))
 
-    console.log(params)
-
     const url = path || this.baseUrl
 
     const { data } = await this.api.get(url, {

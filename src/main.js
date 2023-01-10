@@ -16,14 +16,14 @@ import Modal from './Modal'
 import Tab from './Tab'
 
 const install = (app) => {
-  app.component('wyxos-button', WyxosButton)
-  app.component('wyxos-collection', WyxosCollection)
-  app.component('wyxos-datepicker', WyxosDatepicker)
-  app.component('wyxos-form', WyxosForm)
-  app.component('wyxos-image', WyxosImage)
-  app.component('wyxos-input', WyxosInput)
-  app.component('wyxos-tags', WyxosTags)
-  app.component('wyxos-prompt', WyxosPrompt)
+  app.component(WyxosButton.name, WyxosButton)
+  app.component(WyxosCollection.name, WyxosCollection)
+  app.component(WyxosDatepicker.name, WyxosDatepicker)
+  app.component(WyxosForm.name, WyxosForm)
+  app.component(WyxosImage.name, WyxosImage)
+  app.component(WyxosInput.name, WyxosInput)
+  app.component(WyxosPrompt.name, WyxosPrompt)
+  app.component(WyxosTags.name, WyxosTags)
 }
 
 export {
@@ -53,6 +53,7 @@ export default {
   Listing,
   LoadState,
   Modal,
+  Tab,
   useFormErrors,
   WyxosButton,
   WyxosCollection,
@@ -62,6 +63,5 @@ export default {
   WyxosInput,
   WyxosTags,
   WyxosPrompt,
-  Tab,
   install
 }

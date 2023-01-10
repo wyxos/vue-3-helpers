@@ -29,10 +29,8 @@ export default class FormBuilder {
     this.setAttributes(options.form)
 
     this.states.load.loaded()
-  }
 
-  static create (options) {
-    return new Proxy(new FormBuilder(options), {
+    return new Proxy(this, {
       get (target, name, receiver) {
         if (!Reflect.has(target, name)) {
           if (name in target.form) {
@@ -58,6 +56,10 @@ export default class FormBuilder {
         return Reflect.set(target, name, value, receiver)
       }
     })
+  }
+
+  static create (options) {
+    return new this(options)
   }
 
   setPath (path) {
