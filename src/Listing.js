@@ -1,6 +1,7 @@
 import { reactive } from 'vue'
 import axios from 'axios'
 import LoadState from './LoadState.js'
+import qs from 'query-string';
 
 export default class Listing {
   api = null
@@ -31,7 +32,7 @@ export default class Listing {
   })
 
   static create (params, options) {
-    if(!options){
+    if (!options) {
       throw Error('Listing options have not been provided.')
     }
 
@@ -62,15 +63,7 @@ export default class Listing {
   }
 
   mergeSearch () {
-    const urlParams = new URLSearchParams(window.location.search.substring(1))
-
-    const query = {}
-
-    for (const [key, value] of urlParams.entries()) {
-      if(value && value !== 'null'){
-        query[key] = value
-      }
-    }
+    const query = qs.parse(window.location.search)
 
     Object.assign(this.params, this.structure, query)
   }
@@ -109,7 +102,7 @@ export default class Listing {
     return data
   }
 
-  async reload(path){
+  async reload (path) {
     const { data } = await this.api.get(path || this.baseUrl, {
       params: JSON.parse(JSON.stringify(this.params))
     })
@@ -124,14 +117,14 @@ export default class Listing {
   refreshUrl () {
     const base = window.location.href.replace(/\?.*/, '')
 
-    const query = new URLSearchParams(JSON.parse(JSON.stringify(this.params)))
+    const params = JSON.parse(JSON.stringify(this.params))
 
-    const url = base + '?' + query.toString()
+    const url = base + '?' + qs.stringify(params)
 
     window.history.replaceState({}, '', url)
   }
 
-  push(item){
+  push (item) {
     this.query.items.push(
       this.transformItem(
         item
