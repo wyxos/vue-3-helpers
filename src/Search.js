@@ -22,7 +22,7 @@ export default class Search {
   }
 
   search (value) {
-    return this.customSearch({ payload: value })
+    return this.customSearch({ payload: { value } })
   }
 
   async customSearch ({ url, payload }) {

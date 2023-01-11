@@ -969,7 +969,7 @@ class Yt {
     return new Yt(t);
   }
   search(t) {
-    return this.customSearch({ payload: t });
+    return this.customSearch({ payload: { value: t } });
   }
   async customSearch({ url: t, payload: r }) {
     this.state.loading(), this.result.value = [];
