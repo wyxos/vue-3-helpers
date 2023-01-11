@@ -7,6 +7,8 @@ export default class Search {
 
   result = ref([])
 
+  timeout = null
+
   options = {
     url: null,
     payload: null,
@@ -26,23 +28,35 @@ export default class Search {
   }
 
   async customSearch ({ url, payload }) {
-    this.state.loading()
+    if(this.timeout){
+      this.controller.abort()
 
-    this.result.value = []
+      clearTimeout(this.timeout)
+    }
 
-    const base = url || this.options.url
+    this.controller = new AbortController();
 
-    const { data } = await axios
-      .post(`${base}/search`, payload || this.options.payload)
-      .catch((error) => {
-        this.state.failed()
+    this.timeout = setTimeout(async () => {
+      this.state.loading()
 
-        throw error
-      })
+      this.result.value = []
 
-    this.result.value = data.result
+      const base = url || this.options.url
 
-    this.state.loaded()
+      const { data } = await axios
+        .post(`${base}/search`, payload || this.options.payload, {
+          signal: this.controller.signal
+        })
+        .catch((error) => {
+          this.state.failed()
+
+          throw error
+        })
+
+      this.result.value = data.result
+
+      this.state.loaded()
+    }, 500)
   }
 
   async restore (url, payload) {
