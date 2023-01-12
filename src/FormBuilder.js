@@ -100,7 +100,7 @@ export default class FormBuilder {
     const cleanJson = JSON.parse(JSON.stringify(this.form))
 
     const payload = formatter
-      ? formatter(cleanJson)
+      ? formatter(this.form)
       : cleanJson
 
     const url = path || this.submitPath

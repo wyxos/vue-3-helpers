@@ -1090,7 +1090,7 @@ class dn {
       config: n = {}
     } = t || {};
     this.errors.clear(null, this.bag), this.states.submit.loading();
-    const a = JSON.parse(JSON.stringify(this.form)), i = s ? s(a) : a, o = r || this.submitPath;
+    const a = JSON.parse(JSON.stringify(this.form)), i = s ? s(this.form) : a, o = r || this.submitPath;
     if (!o)
       throw this.states.submit.failed(), Error("No url defined.");
     const u = (n == null ? void 0 : n.method) || this.submitMethod || "post", { data: f } = await le[u](
