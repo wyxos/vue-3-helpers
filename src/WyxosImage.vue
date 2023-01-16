@@ -1,7 +1,3 @@
-<template>
-  <img ref="image" src="" alt="" :width="width" :height="height" />
-</template>
-
 <script>
 export default {
   name: 'WyxosImage',
@@ -63,3 +59,7 @@ export default {
   }
 }
 </script>
+
+<template>
+    <img ref="image" src="" alt="" :width="width" :height="height" />
+</template>

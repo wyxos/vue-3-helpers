@@ -1,11 +1,3 @@
-<template>
-  <slot v-bind="{ add, remove, items }">
-    <ul>
-      <li></li>
-    </ul>
-  </slot>
-</template>
-
 <script>
 export default {
   name: 'WyxosCollection',
@@ -38,3 +30,12 @@ export default {
   }
 }
 </script>
+
+<template>
+    <slot v-bind="{ add, remove, items }">
+        <ul>
+            <li></li>
+        </ul>
+    </slot>
+</template>
+

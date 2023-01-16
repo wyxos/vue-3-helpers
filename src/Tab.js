@@ -1,37 +1,37 @@
-import {ref} from "vue";
+import { ref } from 'vue'
 
 export default class Tab {
   active = ref(null)
 
-  callbacks = {  }
+  callbacks = {}
 
-  constructor(active) {
+  constructor (active) {
     this.active.value = active
   }
 
-  isActive(name){
+  isActive (name) {
     return this.active.value === name
   }
 
-  onChange(callbacks){
+  onChange (callbacks) {
     this.callbacks = callbacks
   }
 
-  activeClass(name, classes){
+  activeClass (name, classes) {
     return {
       class: this.isActive(name) ? classes : []
     }
   }
 
-  activate(name){
+  activate (name) {
     this.active.value = name
 
-    if(this.callbacks[name]){
+    if (this.callbacks[name]) {
       this.callbacks[name]()
     }
   }
 
-  static create(name){
+  static create (name) {
     return new Tab(name)
   }
 }

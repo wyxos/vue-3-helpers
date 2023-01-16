@@ -9,6 +9,7 @@ export default {
   }
 }
 </script>
+
 <template>
   <o-button :disabled="loading">
     <slot v-if="!loading">Submit</slot>

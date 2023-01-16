@@ -1,4 +1,5 @@
 import { reactive } from 'vue'
+
 export default class LoadState {
   state = reactive({
     isLoading: false,
