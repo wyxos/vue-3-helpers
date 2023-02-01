@@ -85,12 +85,18 @@ export default {
       this.query = []
 
       this.$emit('update:modelValue', this.query)
+    },
+    addItem() {
+      this.$refs.tagInput.addItem()
     }
   }
 }
 </script>
 <template>
   <o-inputitems
+      icon="add"
+      @icon-click="addItem()"
+      ref="tagInput"
     v-bind="$attrs"
     v-model="query"
     :data="search.result.value"
