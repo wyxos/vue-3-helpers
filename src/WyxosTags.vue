@@ -66,7 +66,7 @@ export default {
               url: this.path,
               payload: this.payloadFormatter({
                   value,
-                  exclude: this.query.map((tag) => tag.id)
+                  exclude: this.query.map((item) => this.excludeFormatter(item)).filter(Boolean)
               })
           }
       )
@@ -94,8 +94,6 @@ export default {
 </script>
 <template>
   <o-inputitems
-      icon="add"
-      @icon-click="addItem()"
       ref="tagInput"
     v-bind="$attrs"
     v-model="query"
