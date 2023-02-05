@@ -4380,6 +4380,7 @@ const kr = /* @__PURE__ */ we(Jd, [["render", Qd]]), Xd = {
   emits: ["loaded"],
   data() {
     return {
+      instance: null,
       width: 0,
       height: 0
     };
@@ -4387,22 +4388,23 @@ const kr = /* @__PURE__ */ we(Jd, [["render", Qd]]), Xd = {
   mounted() {
     this.loadImage();
   },
+  unmounted() {
+    this.instance.onload = null;
+  },
   methods: {
     loadImage() {
       return typeof this.src == "object" ? this.loadFile() : this.loadPath();
     },
     loadFile() {
-      const e = new FileReader();
-      e.onload = (t) => {
-        const r = t.target.result;
-        this.$refs.image.src = r, this.width = this.resize ? this.resize.width : r.width, this.height = this.resize ? this.resize.height : r.height, this.$emit("loaded");
-      }, e.readAsDataURL(this.src);
+      this.instance = new FileReader(), this.instance.onload = (e) => {
+        const t = e.target.result;
+        this.$refs.image.src = t, this.width = this.resize ? this.resize.width : t.width, this.height = this.resize ? this.resize.height : t.height, this.$emit("loaded");
+      }, this.instance.readAsDataURL(this.src);
     },
     loadPath() {
-      const e = new Image();
-      e.onload = () => {
-        this.$refs.image.src = this.src, this.width = this.resize ? this.resize.width : e.width, this.height = this.resize ? this.resize.height : e.height, this.$emit("loaded");
-      }, e.src = this.src;
+      this.instance = new Image(), this.instance.onload = () => {
+        this.$refs.image.src = this.src, this.width = this.resize ? this.resize.width : this.instance.width, this.height = this.resize ? this.resize.height : this.instance.height, this.$emit("loaded");
+      }, this.instance.src = this.src;
     }
   }
 }, Kd = ["width", "height"];

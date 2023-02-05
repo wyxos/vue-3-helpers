@@ -14,12 +14,16 @@ export default {
     emits: ['loaded'],
     data () {
         return {
+            instance: null,
             width: 0,
             height: 0
         }
     },
     mounted () {
         this.loadImage()
+    },
+    unmounted () {
+        this.instance.onload = null
     },
     methods: {
         loadImage () {
@@ -30,9 +34,9 @@ export default {
             return this.loadPath()
         },
         loadFile () {
-            const reader = new FileReader()
+            this.instance = new FileReader()
 
-            reader.onload = (event) => {
+            this.instance.onload = (event) => {
                 const image = event.target.result
 
                 this.$refs.image.src = image
@@ -44,22 +48,22 @@ export default {
                 this.$emit('loaded')
             }
 
-            reader.readAsDataURL(this.src)
+            this.instance.readAsDataURL(this.src)
         },
         loadPath () {
-            const image = new Image()
+            this.instance = new Image()
 
-            image.onload = () => {
+            this.instance.onload = () => {
                 this.$refs.image.src = this.src
 
-                this.width = this.resize ? this.resize.width : image.width
+                this.width = this.resize ? this.resize.width : this.instance.width
 
-                this.height = this.resize ? this.resize.height : image.height
+                this.height = this.resize ? this.resize.height : this.instance.height
 
                 this.$emit('loaded')
             }
 
-            image.src = this.src
+            this.instance.src = this.src
         }
     }
 }
