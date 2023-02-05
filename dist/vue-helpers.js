@@ -4377,6 +4377,7 @@ const kr = /* @__PURE__ */ we(Jd, [["render", Qd]]), Xd = {
       default: null
     }
   },
+  emits: ["loaded"],
   data() {
     return {
       width: 0,
@@ -4394,13 +4395,13 @@ const kr = /* @__PURE__ */ we(Jd, [["render", Qd]]), Xd = {
       const e = new FileReader();
       e.onload = (t) => {
         const r = t.target.result;
-        this.$refs.image.src = r, this.width = this.resize ? this.resize.width : r.width, this.height = this.resize ? this.resize.height : r.height;
+        this.$refs.image.src = r, this.width = this.resize ? this.resize.width : r.width, this.height = this.resize ? this.resize.height : r.height, this.$emit("loaded");
       }, e.readAsDataURL(this.src);
     },
     loadPath() {
       const e = new Image();
       e.onload = () => {
-        this.$refs.image.src = this.src, this.width = this.resize ? this.resize.width : e.width, this.height = this.resize ? this.resize.height : e.height;
+        this.$refs.image.src = this.src, this.width = this.resize ? this.resize.width : e.width, this.height = this.resize ? this.resize.height : e.height, this.$emit("loaded");
       }, e.src = this.src;
     }
   }
