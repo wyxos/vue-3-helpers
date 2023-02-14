@@ -1,5 +1,5 @@
 <script>
-import LoadState from './LoadState.js'
+import LoadState from './LoadState'
 
 export default {
     name: 'WyxosPrompt',

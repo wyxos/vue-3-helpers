@@ -1,6 +1,6 @@
 import { reactive } from 'vue'
 import axios from 'axios'
-import LoadState from './LoadState.js'
+import LoadState from './LoadState'
 import qs from 'query-string';
 
 export default class Listing {
