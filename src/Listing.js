@@ -121,7 +121,7 @@ export default class Listing {
 
     const params = JSON.parse(JSON.stringify(this.params))
 
-    const url = base + '?' + qs.stringify(params)
+    const url = base + '?' + qs.stringify(params, {arrayFormat: 'bracket'})
 
     window.history.replaceState({}, '', url)
   }
