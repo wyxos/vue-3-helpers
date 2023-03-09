@@ -63,7 +63,9 @@ export default class Listing {
   }
 
   mergeSearch () {
-    const query = qs.parse(window.location.search)
+    const query = qs.parse(window.location.search, {
+      arrayFormat: 'bracket'
+    })
 
     Object.assign(this.params, this.structure, query)
   }
