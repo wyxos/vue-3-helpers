@@ -4450,7 +4450,7 @@ const Mr = /* @__PURE__ */ we(Xd, [["render", ef]]), tf = {
     inputAttrs() {
       const e = this.$attrs, t = {};
       return Object.keys(e).forEach((r) => {
-        /^input-/.test(r) && (t[r.replace(/^input-/, "")] = e[r]);
+        /^field-/.test(r) || (t[r] = e[r]);
       }), t;
     }
   }
