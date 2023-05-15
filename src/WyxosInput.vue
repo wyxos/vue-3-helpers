@@ -46,8 +46,8 @@ export default {
             const output = {}
 
             Object.keys(attrs).forEach((key) => {
-                if (/^input-/.test(key)) {
-                    output[key.replace(/^input-/, '')] = attrs[key]
+                if (!/^field-/.test(key)) {
+                    output[key] = attrs[key]
                 }
             })
 
